@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我們的記帳本 💑</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FAF8F5;--surface:#FFFFFF;--surface2:#F3F0EB;
+  --border:rgba(0,0,0,0.08);--border-md:rgba(0,0,0,0.14);
+  --text:#1A1714;--text2:#6B6560;--text3:#A09A95;
+  --me:#185FA5;--me-bg:#E6F1FB;--me-text:#0C447C;
+  --her:#993556;--her-bg:#FBEAF0;--her-text:#72243E;
+  --accent:#D85A30;--radius:12px;--radius-sm:8px;
+}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;position:sticky;top:0;z-index:10}
+.header-inner{max-width:700px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'DM Serif Display',serif;font-size:21px;letter-spacing:-0.3px}
+.logo span{color:var(--accent)}
+.nav-tabs{display:flex;gap:4px}
+.nav-btn{padding:6px 14px;border-radius:99px;border:1px solid var(--border-md);background:transparent;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text2);transition:all .15s}
+.nav-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+main{max-width:700px;margin:0 auto;padding:20px 16px 0}
+.page{display:none}.page.active{display:block}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center}
+.stat-label{font-size:11px;color:var(--text3);letter-spacing:0.3px;margin-bottom:6px;text-transform:uppercase}
+.stat-value{font-size:17px;font-weight:700;color:var(--text)}
+.stat-value.me{color:var(--me)}.stat-value.her{color:var(--her)}
+.form-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:20px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
+.form-group input{font-family:'Noto Sans TC',sans-serif;font-size:14px;color:var(--text);background:var(--bg);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:9px 12px;outline:none;transition:border-color .15s;width:100%}
+.form-group input:focus{border-color:var(--accent);background:var(--surface)}
+.payer-toggle{display:flex;gap:8px}
+.payer-btn{flex:1;padding:10px 8px;border:1px solid var(--border-md);border-radius:var(--radius-sm);background:var(--bg);cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:14px;color:var(--text2);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:500}
+.payer-btn.active-me{background:var(--me-bg);border-color:var(--me);color:var(--me-text);font-weight:700}
+.payer-btn.active-her{background:var(--her-bg);border-color:var(--her);color:var(--her-text);font-weight:700}
+.add-btn{width:100%;padding:11px;background:var(--text);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:opacity .15s,transform .1s;display:flex;align-items:center;justify-content:center;gap:6px}
+.add-btn:hover{opacity:0.85}.add-btn:active{transform:scale(0.98)}
+.add-btn:disabled{opacity:0.5;cursor:not-allowed}
+.save-note{font-size:11px;color:var(--text3);text-align:right;margin-top:8px;min-height:16px}
+.filter-bar{display:flex;gap:6px;margin-bottom:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.filter-left{display:flex;gap:6px}
+.filter-btn{padding:5px 14px;border-radius:99px;border:1px solid var(--border-md);background:transparent;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text2);transition:all .12s}
+.filter-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+.entry-list{display:flex;flex-direction:column;gap:8px}
+.entry{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;display:flex;align-items:center;gap:12px;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.entry-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;font-weight:700}
+.entry-icon.me{background:var(--me-bg);color:var(--me)}
+.entry-icon.her{background:var(--her-bg);color:var(--her)}
+.entry-info{flex:1;min-width:0}
+.entry-item{font-size:14px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.entry-meta{font-size:12px;color:var(--text3);margin-top:3px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.tag{font-size:11px;padding:2px 8px;border-radius:99px}
+.tag.loc{background:var(--surface2);color:var(--text2)}
+.tag.me{background:var(--me-bg);color:var(--me-text)}
+.tag.her{background:var(--her-bg);color:var(--her-text)}
+.entry-amount{font-size:15px;font-weight:700;margin-right:4px;white-space:nowrap}
+.entry-amount.me{color:var(--me)}.entry-amount.her{color:var(--her)}
+.delete-btn{background:none;border:none;cursor:pointer;color:var(--text3);padding:5px;border-radius:6px;font-size:16px;line-height:1;transition:all .12s;flex-shrink:0}
+.delete-btn:hover{background:var(--surface2);color:var(--text2)}
+.empty{text-align:center;padding:3rem 1rem;color:var(--text3);font-size:14px;line-height:2.2}
+.empty-icon{font-size:32px;display:block;margin-bottom:8px}
+.history-controls{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.hist-select{font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:7px 10px;outline:none;cursor:pointer}
+.search-input{font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:7px 12px;outline:none;flex:1;min-width:160px}
+.search-input:focus{border-color:var(--accent)}
+.month-group{margin-bottom:20px}
+.month-header{font-size:13px;font-weight:700;color:var(--text2);padding:6px 2px;margin-bottom:8px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:baseline}
+.month-total{font-weight:400;color:var(--text3);font-size:12px}
+.sync-note{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:5px}
+.dot{width:7px;height:7px;border-radius:50%;background:#4CAF50;display:inline-block;flex-shrink:0}
+.dot.syncing{background:#FFA726;animation:blink 1s infinite}
+.dot.err{background:#e53935}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.loading{text-align:center;padding:2rem;color:var(--text3);font-size:14px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:#fff;font-size:13px;padding:9px 20px;border-radius:99px;opacity:0;transition:all .25s;pointer-events:none;z-index:99;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:480px){
+  .form-grid{grid-template-columns:1fr}
+  .form-group.full{grid-column:1}
+  .stats{gap:6px}.stat{padding:10px 6px}.stat-value{font-size:15px}
+  .history-controls{flex-direction:column}
+  .search-input{min-width:unset;width:100%}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">我們的<span>記帳本</span> 💑</div>
+    <div class="nav-tabs">
+      <button class="nav-btn active" onclick="switchPage('home',this)">記帳</button>
+      <button class="nav-btn" onclick="switchPage('history',this)">歷史紀錄</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="page active" id="page-home">
+    <div class="stats">
+      <div class="stat"><div class="stat-label">總消費</div><div class="stat-value" id="statTotal">—</div></div>
+      <div class="stat"><div class="stat-label">惟鈞付了</div><div class="stat-value me" id="statMe">—</div></div>
+      <div class="stat"><div class="stat-label">虹綾付了</div><div class="stat-value her" id="statHer">—</div></div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>📅 日期</label>
+          <input type="date" id="inpDate">
+        </div>
+        <div class="form-group">
+          <label>💰 金額（NT$）</label>
+          <input type="number" id="inpAmt" placeholder="0" min="0">
+        </div>
+        <div class="form-group">
+          <label>📍 地點</label>
+          <input type="text" id="inpLoc" placeholder="例：信義區、東區…">
+        </div>
+        <div class="form-group">
+          <label>🛍 品項</label>
+          <input type="text" id="inpItem" placeholder="例：晚餐、電影票…">
+        </div>
+        <div class="form-group full">
+          <label>👤 付款人</label>
+          <div class="payer-toggle">
+            <button class="payer-btn active-me" id="btnMe" onclick="setPayer('惟鈞')">💙 惟鈞付</button>
+            <button class="payer-btn" id="btnHer" onclick="setPayer('虹綾')">🩷 虹綾付</button>
+          </div>
+        </div>
+      </div>
+      <button class="add-btn" id="addBtn" onclick="addEntry()">＋ 新增紀錄</button>
+      <div class="save-note" id="saveNote"></div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="filter-left">
+        <button class="filter-btn active" onclick="setFilter('all',this)">全部</button>
+        <button class="filter-btn" onclick="setFilter('惟鈞',this)">惟鈞</button>
+        <button class="filter-btn" onclick="setFilter('虹綾',this)">虹綾</button>
+      </div>
+      <div class="sync-note">
+        <span class="dot syncing" id="syncDot"></span>
+        <span id="syncText">連線中…</span>
+      </div>
+    </div>
+
+    <div class="entry-list" id="entryList">
+      <div class="loading">⏳ 載入資料中…</div>
+    </div>
+  </div>
+
+  <div class="page" id="page-history">
+    <div class="history-controls">
+      <select class="hist-select" id="histMonth" onchange="renderHistory()">
+        <option value="all">所有月份</option>
+      </select>
+      <select class="hist-select" id="histPayer" onchange="renderHistory()">
+        <option value="all">所有付款人</option>
+        <option value="惟鈞">惟鈞</option>
+        <option value="虹綾">虹綾</option>
+      </select>
+      <input class="search-input" id="histSearch" placeholder="🔍 搜尋地點或品項…" oninput="renderHistory()">
+    </div>
+    <div id="historyList"><div class="loading">⏳ 載入中…</div></div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API      = 'https://script.google.com/macros/s/AKfycbxkwvv97jl3dGSh1Qz6mwgm645e_Nah3-xMq7MdRSM5r8qXiQcz8oHzJq9n1a_eA4HByA/exec';
+const NAME_ME  = '惟鈞';
+const NAME_HER = '虹綾';
+
+let entries = [], payer = NAME_ME, filter = 'all';
+
+document.getElementById('inpDate').value = new Date().toISOString().split('T')[0];
+
+function apiGet(params) {
+  const url = API + '?' + new URLSearchParams(params).toString();
+  return fetch(url).then(r => r.json());
+}
+
+async function fetchEntries() {
+  setSyncState('syncing');
+  try {
+    const json = await apiGet({});
+    if (json.success) {
+      entries = json.data.map(r => ({
+        id:       String(r.id),
+        date:     r.date,
+        location: r.location,
+        item:     r.item,
+        amt:      Number(r.amount),
+        payer:    r.payer   // 直接存中文名字
+      })).sort((a,b) => Number(b.id) - Number(a.id));
+      setSyncState('ok');
+    } else {
+      setSyncState('err');
+      showToast('連線失敗：' + (json.error || '未知錯誤'));
+    }
+  } catch(e) {
+    console.error(e);
+    setSyncState('err');
+    showToast('無法連線，請確認部署設定');
+  }
+  updateStats(); renderList(); buildMonthOptions(); renderHistory();
+}
+
+async function addEntry() {
+  const date = document.getElementById('inpDate').value;
+  const amt  = parseFloat(document.getElementById('inpAmt').value);
+  const loc  = document.getElementById('inpLoc').value.trim();
+  const item = document.getElementById('inpItem').value.trim();
+  if (!date || !amt || amt <= 0 || !loc || !item) {
+    showToast('請填寫所有欄位 ⚠️'); return;
+  }
+  const btn = document.getElementById('addBtn');
+  btn.disabled = true; btn.textContent = '儲存中…';
+  const id = String(Date.now());
+  try {
+    const json = await apiGet({ action:'add', id, date, location:loc, item, amount:amt, payer });
+    if (json.success) {
+      entries.unshift({ id, date, location:loc, item, amt, payer });
+      document.getElementById('inpAmt').value = '';
+      document.getElementById('inpLoc').value = '';
+      document.getElementById('inpItem').value = '';
+      document.getElementById('inpItem').focus();
+      const t = new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
+      document.getElementById('saveNote').textContent = '✓ 已同步到雲端 · ' + t;
+      showToast('新增成功 ✓');
+      updateStats(); renderList(); buildMonthOptions();
+    } else { showToast('儲存失敗，請重試 ⚠️'); }
+  } catch(e) {
+    console.error(e);
+    showToast('網路錯誤，請重試 ⚠️');
+  }
+  btn.disabled = false; btn.textContent = '＋ 新增紀錄';
+}
+
+async function deleteEntry(id) {
+  if (!confirm('確定要刪除這筆紀錄？')) return;
+  const backup = [...entries];
+  entries = entries.filter(e => e.id !== String(id));
+  updateStats(); renderList(); renderHistory();
+  try {
+    const json = await apiGet({ action:'delete', id });
+    if (!json.success) { entries = backup; updateStats(); renderList(); showToast('刪除失敗'); }
+    else { showToast('已刪除'); buildMonthOptions(); }
+  } catch(e) { entries = backup; updateStats(); renderList(); showToast('網路錯誤'); }
+}
+
+function setPayer(p) {
+  payer = p;
+  document.getElementById('btnMe').className  = 'payer-btn' + (p===NAME_ME  ? ' active-me'  : '');
+  document.getElementById('btnHer').className = 'payer-btn' + (p===NAME_HER ? ' active-her' : '');
+}
+
+function setFilter(f, btn) {
+  filter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderList();
+}
+
+function switchPage(page, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (page === 'history') renderHistory();
+}
+
+function setSyncState(s) {
+  const dot = document.getElementById('syncDot');
+  const txt = document.getElementById('syncText');
+  dot.className = 'dot' + (s==='syncing' ? ' syncing' : s==='err' ? ' err' : '');
+  txt.textContent = s==='syncing' ? '同步中…' : s==='ok' ? '已同步' : '無法連線';
+}
+
+function isMe(e) { return e.payer === NAME_ME; }
+
+function updateStats() {
+  const total = entries.reduce((s,e)=>s+e.amt, 0);
+  const me    = entries.filter(e=>isMe(e)).reduce((s,e)=>s+e.amt, 0);
+  const her   = entries.filter(e=>!isMe(e)).reduce((s,e)=>s+e.amt, 0);
+  document.getElementById('statTotal').textContent = 'NT$'+total.toLocaleString();
+  document.getElementById('statMe').textContent    = 'NT$'+me.toLocaleString();
+  document.getElementById('statHer').textContent   = 'NT$'+her.toLocaleString();
+}
+
+function entryHTML(e) {
+  const me = isMe(e);
+  const initial = e.payer.slice(-1);
+  const d = new Date(e.date+'T00:00:00');
+  const ds = (d.getMonth()+1) + '/' + d.getDate();
+  return `<div class="entry">
+    <div class="entry-icon ${me?'me':'her'}">${initial}</div>
+    <div class="entry-info">
+      <div class="entry-item">${e.item}</div>
+      <div class="entry-meta">
+        <span>${ds}</span>
+        <span class="tag loc">📍 ${e.location}</span>
+        <span class="tag ${me?'me':'her'}">${e.payer}付</span>
+      </div>
+    </div>
+    <span class="entry-amount ${me?'me':'her'}">NT$${e.amt.toLocaleString()}</span>
+    <button class="delete-btn" onclick="deleteEntry('${e.id}')" title="刪除">✕</button>
+  </div>`;
+}
+
+function renderList() {
+  const list = document.getElementById('entryList');
+  const data = filter==='all' ? entries : entries.filter(e=>e.payer===filter);
+  if (!data.length) {
+    list.innerHTML = '<div class="empty"><span class="empty-icon">🧾</span>' +
+      (entries.length===0 ? '還沒有紀錄<br>新增第一筆吧！' : '此篩選條件沒有紀錄') + '</div>';
+    return;
+  }
+  list.innerHTML = data.map(entryHTML).join('');
+}
+
+function buildMonthOptions() {
+  const sel = document.getElementById('histMonth');
+  const cur = sel.value;
+  const months = [...new Set(entries.map(e=>e.date.slice(0,7)))].sort().reverse();
+  sel.innerHTML = '<option value="all">所有月份</option>' +
+    months.map(m=>`<option value="${m}"${m===cur?' selected':''}>${m.replace('-','年')}月</option>`).join('');
+}
+
+function renderHistory() {
+  const mf = document.getElementById('histMonth').value;
+  const pf = document.getElementById('histPayer').value;
+  const q  = document.getElementById('histSearch').value.trim().toLowerCase();
+  const filtered = entries.filter(e => {
+    if (mf !== 'all' && !e.date.startsWith(mf)) return false;
+    if (pf !== 'all' && e.payer !== pf) return false;
+    if (q && !e.item.toLowerCase().includes(q) && !e.location.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  const container = document.getElementById('historyList');
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty"><span class="empty-icon">🔍</span>找不到符合的紀錄</div>';
+    return;
+  }
+  const groups = {};
+  filtered.forEach(e => {
+    const m = e.date.slice(0,7);
+    if (!groups[m]) groups[m] = [];
+    groups[m].push(e);
+  });
+  container.innerHTML = Object.keys(groups).sort().reverse().map(m => {
+    const list  = groups[m];
+    const total = list.reduce((s,e)=>s+e.amt,0);
+    const me    = list.filter(e=>isMe(e)).reduce((s,e)=>s+e.amt,0);
+    const her   = list.filter(e=>!isMe(e)).reduce((s,e)=>s+e.amt,0);
+    const [yr, mo] = m.split('-');
+    return `<div class="month-group">
+      <div class="month-header">
+        <span>${yr}年${parseInt(mo)}月 <small style="font-weight:400;color:var(--text3)">${list.length}筆</small></span>
+        <span class="month-total">NT$${total.toLocaleString()} ／ ${NAME_ME} NT$${me.toLocaleString()} ／ ${NAME_HER} NT$${her.toLocaleString()}</span>
+      </div>
+      ${list.map(entryHTML).join('')}
+    </div>`;
+  }).join('');
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+['inpLoc','inpItem','inpAmt'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') addEntry(); });
+});
+
+fetchEntries();
+</script>
+</body>
+</html>
