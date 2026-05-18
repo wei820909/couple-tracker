@@ -25,11 +25,16 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .nav-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
 main{max-width:700px;margin:0 auto;padding:20px 16px 0}
 .page{display:none}.page.active{display:block}
+
+/* Stats */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center}
 .stat-label{font-size:11px;color:var(--text3);letter-spacing:0.3px;margin-bottom:6px;text-transform:uppercase}
 .stat-value{font-size:17px;font-weight:700;color:var(--text)}
 .stat-value.me{color:var(--me)}.stat-value.her{color:var(--her)}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:4px}
+
+/* Form */
 .form-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:20px}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .form-group{display:flex;flex-direction:column;gap:5px}
@@ -37,6 +42,15 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
 .form-group label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
 .form-group input{font-family:'Noto Sans TC',sans-serif;font-size:14px;color:var(--text);background:var(--bg);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:9px 12px;outline:none;transition:border-color .15s;width:100%}
 .form-group input:focus{border-color:var(--accent);background:var(--surface)}
+.form-group input.me-input:focus{border-color:var(--me)}
+.form-group input.her-input:focus{border-color:var(--her)}
+
+.amount-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;grid-column:1/-1}
+.amount-label-me{font-size:11px;color:var(--me-text);font-weight:600;text-transform:uppercase;letter-spacing:0.3px}
+.amount-label-her{font-size:11px;color:var(--her-text);font-weight:600;text-transform:uppercase;letter-spacing:0.3px}
+.amount-label-total{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
+.total-display{font-size:14px;font-weight:700;color:var(--text);background:var(--surface2);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:9px 12px;display:flex;align-items:center}
+
 .payer-toggle{display:flex;gap:8px}
 .payer-btn{flex:1;padding:10px 8px;border:1px solid var(--border-md);border-radius:var(--radius-sm);background:var(--bg);cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:14px;color:var(--text2);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:500}
 .payer-btn.active-me{background:var(--me-bg);border-color:var(--me);color:var(--me-text);font-weight:700}
@@ -45,10 +59,14 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
 .add-btn:hover{opacity:0.85}.add-btn:active{transform:scale(0.98)}
 .add-btn:disabled{opacity:0.5;cursor:not-allowed}
 .save-note{font-size:11px;color:var(--text3);text-align:right;margin-top:8px;min-height:16px}
+
+/* Filter */
 .filter-bar{display:flex;gap:6px;margin-bottom:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .filter-left{display:flex;gap:6px}
 .filter-btn{padding:5px 14px;border-radius:99px;border:1px solid var(--border-md);background:transparent;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text2);transition:all .12s}
 .filter-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+
+/* Entry */
 .entry-list{display:flex;flex-direction:column;gap:8px}
 .entry{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;display:flex;align-items:center;gap:12px;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
@@ -62,19 +80,31 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
 .tag.loc{background:var(--surface2);color:var(--text2)}
 .tag.me{background:var(--me-bg);color:var(--me-text)}
 .tag.her{background:var(--her-bg);color:var(--her-text)}
-.entry-amount{font-size:15px;font-weight:700;margin-right:4px;white-space:nowrap}
-.entry-amount.me{color:var(--me)}.entry-amount.her{color:var(--her)}
+.entry-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.entry-total{font-size:15px;font-weight:700;color:var(--text)}
+.entry-split{display:flex;gap:6px}
+.split-tag{font-size:11px;padding:2px 7px;border-radius:99px}
+.split-tag.me{background:var(--me-bg);color:var(--me-text)}
+.split-tag.her{background:var(--her-bg);color:var(--her-text)}
 .delete-btn{background:none;border:none;cursor:pointer;color:var(--text3);padding:5px;border-radius:6px;font-size:16px;line-height:1;transition:all .12s;flex-shrink:0}
 .delete-btn:hover{background:var(--surface2);color:var(--text2)}
 .empty{text-align:center;padding:3rem 1rem;color:var(--text3);font-size:14px;line-height:2.2}
 .empty-icon{font-size:32px;display:block;margin-bottom:8px}
+
+/* History */
 .history-controls{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .hist-select{font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:7px 10px;outline:none;cursor:pointer}
 .search-input{font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:7px 12px;outline:none;flex:1;min-width:160px}
 .search-input:focus{border-color:var(--accent)}
 .month-group{margin-bottom:20px}
-.month-header{font-size:13px;font-weight:700;color:var(--text2);padding:6px 2px;margin-bottom:8px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:baseline}
+.month-header{font-size:13px;font-weight:700;color:var(--text2);padding:6px 2px;margin-bottom:8px;border-bottom:1px solid var(--border)}
+.month-header-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
 .month-total{font-weight:400;color:var(--text3);font-size:12px}
+.month-split{display:flex;gap:10px;font-size:12px}
+.month-split-me{color:var(--me)}
+.month-split-her{color:var(--her)}
+
+/* Sync */
 .sync-note{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:5px}
 .dot{width:7px;height:7px;border-radius:50%;background:#4CAF50;display:inline-block;flex-shrink:0}
 .dot.syncing{background:#FFA726;animation:blink 1s infinite}
@@ -86,6 +116,7 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
 @media(max-width:480px){
   .form-grid{grid-template-columns:1fr}
   .form-group.full{grid-column:1}
+  .amount-row{grid-template-columns:1fr 1fr 1fr}
   .stats{gap:6px}.stat{padding:10px 6px}.stat-value{font-size:15px}
   .history-controls{flex-direction:column}
   .search-input{min-width:unset;width:100%}
@@ -107,9 +138,20 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
 <main>
   <div class="page active" id="page-home">
     <div class="stats">
-      <div class="stat"><div class="stat-label">總消費</div><div class="stat-value" id="statTotal">—</div></div>
-      <div class="stat"><div class="stat-label">惟鈞付了</div><div class="stat-value me" id="statMe">—</div></div>
-      <div class="stat"><div class="stat-label">虹綾付了</div><div class="stat-value her" id="statHer">—</div></div>
+      <div class="stat">
+        <div class="stat-label">總消費</div>
+        <div class="stat-value" id="statTotal">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">惟鈞消費</div>
+        <div class="stat-value me" id="statMe">—</div>
+        <div class="stat-sub" id="statMePaid"></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">虹綾消費</div>
+        <div class="stat-value her" id="statHer">—</div>
+        <div class="stat-sub" id="statHerPaid"></div>
+      </div>
     </div>
 
     <div class="form-card">
@@ -119,22 +161,35 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
           <input type="date" id="inpDate">
         </div>
         <div class="form-group">
-          <label>💰 金額（NT$）</label>
-          <input type="number" id="inpAmt" placeholder="0" min="0">
-        </div>
-        <div class="form-group">
           <label>📍 地點</label>
           <input type="text" id="inpLoc" placeholder="例：信義區、東區…">
         </div>
-        <div class="form-group">
-          <label>🛍 品項</label>
-          <input type="text" id="inpItem" placeholder="例：晚餐、電影票…">
-        </div>
         <div class="form-group full">
-          <label>👤 付款人</label>
+          <label>🛍 品項</label>
+          <input type="text" id="inpItem" placeholder="例：早餐、電影票…">
+        </div>
+
+        <!-- 金額區塊 -->
+        <div class="amount-row">
+          <div class="form-group">
+            <label class="amount-label-me">💙 惟鈞金額</label>
+            <input type="number" id="inpAmtMe" class="me-input" placeholder="0" min="0" oninput="calcTotal()">
+          </div>
+          <div class="form-group">
+            <label class="amount-label-her">🩷 虹綾金額</label>
+            <input type="number" id="inpAmtHer" class="her-input" placeholder="0" min="0" oninput="calcTotal()">
+          </div>
+          <div class="form-group">
+            <label class="amount-label-total">總金額</label>
+            <div class="total-display" id="totalDisplay">NT$0</div>
+          </div>
+        </div>
+
+        <div class="form-group full">
+          <label>👤 誰結帳</label>
           <div class="payer-toggle">
-            <button class="payer-btn active-me" id="btnMe" onclick="setPayer('惟鈞')">💙 惟鈞付</button>
-            <button class="payer-btn" id="btnHer" onclick="setPayer('虹綾')">🩷 虹綾付</button>
+            <button class="payer-btn active-me" id="btnMe" onclick="setPayer('惟鈞')">💙 惟鈞結帳</button>
+            <button class="payer-btn" id="btnHer" onclick="setPayer('虹綾')">🩷 虹綾結帳</button>
           </div>
         </div>
       </div>
@@ -145,8 +200,8 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
     <div class="filter-bar">
       <div class="filter-left">
         <button class="filter-btn active" onclick="setFilter('all',this)">全部</button>
-        <button class="filter-btn" onclick="setFilter('惟鈞',this)">惟鈞</button>
-        <button class="filter-btn" onclick="setFilter('虹綾',this)">虹綾</button>
+        <button class="filter-btn" onclick="setFilter('惟鈞',this)">惟鈞結帳</button>
+        <button class="filter-btn" onclick="setFilter('虹綾',this)">虹綾結帳</button>
       </div>
       <div class="sync-note">
         <span class="dot syncing" id="syncDot"></span>
@@ -165,9 +220,9 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
         <option value="all">所有月份</option>
       </select>
       <select class="hist-select" id="histPayer" onchange="renderHistory()">
-        <option value="all">所有付款人</option>
-        <option value="惟鈞">惟鈞</option>
-        <option value="虹綾">虹綾</option>
+        <option value="all">所有結帳人</option>
+        <option value="惟鈞">惟鈞結帳</option>
+        <option value="虹綾">虹綾結帳</option>
       </select>
       <input class="search-input" id="histSearch" placeholder="🔍 搜尋地點或品項…" oninput="renderHistory()">
     </div>
@@ -178,7 +233,7 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
 <div class="toast" id="toast"></div>
 
 <script>
-const API      = 'https://script.google.com/macros/s/AKfycbxkwvv97jl3dGSh1Qz6mwgm645e_Nah3-xMq7MdRSM5r8qXiQcz8oHzJq9n1a_eA4HByA/exec';
+const API      = 'https://script.google.com/macros/s/AKfycbytTdM0QzH1l9-_E02lJHdWYmuj1U_At-BFdkQE9CNbNHxlQT26QCZFYhWMUPLnXdu21A/exec';
 const NAME_ME  = '惟鈞';
 const NAME_HER = '虹綾';
 
@@ -191,18 +246,26 @@ function apiGet(params) {
   return fetch(url).then(r => r.json());
 }
 
+function calcTotal() {
+  const me  = parseFloat(document.getElementById('inpAmtMe').value)  || 0;
+  const her = parseFloat(document.getElementById('inpAmtHer').value) || 0;
+  document.getElementById('totalDisplay').textContent = 'NT$' + (me + her).toLocaleString();
+}
+
 async function fetchEntries() {
   setSyncState('syncing');
   try {
     const json = await apiGet({});
     if (json.success) {
       entries = json.data.map(r => ({
-        id:       String(r.id),
-        date:     r.date,
-        location: r.location,
-        item:     r.item,
-        amt:      Number(r.amount),
-        payer:    r.payer   // 直接存中文名字
+        id:         String(r.id),
+        date:       r.date,
+        location:   r.location,
+        item:       r.item,
+        amt:        Number(r.amount),
+        payer:      r.payer,
+        amt_me:     Number(r.amount_me)  || 0,
+        amt_her:    Number(r.amount_her) || 0
       })).sort((a,b) => Number(b.id) - Number(a.id));
       setSyncState('ok');
     } else {
@@ -218,23 +281,33 @@ async function fetchEntries() {
 }
 
 async function addEntry() {
-  const date = document.getElementById('inpDate').value;
-  const amt  = parseFloat(document.getElementById('inpAmt').value);
-  const loc  = document.getElementById('inpLoc').value.trim();
-  const item = document.getElementById('inpItem').value.trim();
-  if (!date || !amt || amt <= 0 || !loc || !item) {
-    showToast('請填寫所有欄位 ⚠️'); return;
+  const date    = document.getElementById('inpDate').value;
+  const loc     = document.getElementById('inpLoc').value.trim();
+  const item    = document.getElementById('inpItem').value.trim();
+  const amt_me  = parseFloat(document.getElementById('inpAmtMe').value)  || 0;
+  const amt_her = parseFloat(document.getElementById('inpAmtHer').value) || 0;
+  const amt     = amt_me + amt_her;
+
+  if (!date || !loc || !item || amt <= 0) {
+    showToast('請填寫所有欄位且金額大於 0 ⚠️'); return;
   }
+
   const btn = document.getElementById('addBtn');
   btn.disabled = true; btn.textContent = '儲存中…';
   const id = String(Date.now());
+
   try {
-    const json = await apiGet({ action:'add', id, date, location:loc, item, amount:amt, payer });
+    const json = await apiGet({
+      action: 'add', id, date, location: loc, item,
+      amount: amt, payer, amount_me: amt_me, amount_her: amt_her
+    });
     if (json.success) {
-      entries.unshift({ id, date, location:loc, item, amt, payer });
-      document.getElementById('inpAmt').value = '';
-      document.getElementById('inpLoc').value = '';
-      document.getElementById('inpItem').value = '';
+      entries.unshift({ id, date, location: loc, item, amt, payer, amt_me, amt_her });
+      document.getElementById('inpAmtMe').value  = '';
+      document.getElementById('inpAmtHer').value = '';
+      document.getElementById('inpLoc').value    = '';
+      document.getElementById('inpItem').value   = '';
+      document.getElementById('totalDisplay').textContent = 'NT$0';
       document.getElementById('inpItem').focus();
       const t = new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
       document.getElementById('saveNote').textContent = '✓ 已同步到雲端 · ' + t;
@@ -288,33 +361,41 @@ function setSyncState(s) {
   txt.textContent = s==='syncing' ? '同步中…' : s==='ok' ? '已同步' : '無法連線';
 }
 
-function isMe(e) { return e.payer === NAME_ME; }
-
 function updateStats() {
-  const total = entries.reduce((s,e)=>s+e.amt, 0);
-  const me    = entries.filter(e=>isMe(e)).reduce((s,e)=>s+e.amt, 0);
-  const her   = entries.filter(e=>!isMe(e)).reduce((s,e)=>s+e.amt, 0);
-  document.getElementById('statTotal').textContent = 'NT$'+total.toLocaleString();
-  document.getElementById('statMe').textContent    = 'NT$'+me.toLocaleString();
-  document.getElementById('statHer').textContent   = 'NT$'+her.toLocaleString();
+  const total   = entries.reduce((s,e)=>s+e.amt, 0);
+  const me_con  = entries.reduce((s,e)=>s+e.amt_me, 0);
+  const her_con = entries.reduce((s,e)=>s+e.amt_her, 0);
+  const me_paid  = entries.filter(e=>e.payer===NAME_ME).reduce((s,e)=>s+e.amt, 0);
+  const her_paid = entries.filter(e=>e.payer===NAME_HER).reduce((s,e)=>s+e.amt, 0);
+  document.getElementById('statTotal').textContent   = 'NT$'+total.toLocaleString();
+  document.getElementById('statMe').textContent      = 'NT$'+me_con.toLocaleString();
+  document.getElementById('statHer').textContent     = 'NT$'+her_con.toLocaleString();
+  document.getElementById('statMePaid').textContent  = '結帳 NT$'+me_paid.toLocaleString();
+  document.getElementById('statHerPaid').textContent = '結帳 NT$'+her_paid.toLocaleString();
 }
 
 function entryHTML(e) {
-  const me = isMe(e);
+  const isMe = e.payer === NAME_ME;
   const initial = e.payer.slice(-1);
   const d = new Date(e.date+'T00:00:00');
   const ds = (d.getMonth()+1) + '/' + d.getDate();
   return `<div class="entry">
-    <div class="entry-icon ${me?'me':'her'}">${initial}</div>
+    <div class="entry-icon ${isMe?'me':'her'}">${initial}</div>
     <div class="entry-info">
       <div class="entry-item">${e.item}</div>
       <div class="entry-meta">
         <span>${ds}</span>
         <span class="tag loc">📍 ${e.location}</span>
-        <span class="tag ${me?'me':'her'}">${e.payer}付</span>
+        <span class="tag ${isMe?'me':'her'}">${e.payer}結帳</span>
       </div>
     </div>
-    <span class="entry-amount ${me?'me':'her'}">NT$${e.amt.toLocaleString()}</span>
+    <div class="entry-right">
+      <div class="entry-total">NT$${e.amt.toLocaleString()}</div>
+      <div class="entry-split">
+        <span class="split-tag me">鈞 NT$${e.amt_me.toLocaleString()}</span>
+        <span class="split-tag her">綾 NT$${e.amt_her.toLocaleString()}</span>
+      </div>
+    </div>
     <button class="delete-btn" onclick="deleteEntry('${e.id}')" title="刪除">✕</button>
   </div>`;
 }
@@ -360,15 +441,21 @@ function renderHistory() {
     groups[m].push(e);
   });
   container.innerHTML = Object.keys(groups).sort().reverse().map(m => {
-    const list  = groups[m];
-    const total = list.reduce((s,e)=>s+e.amt,0);
-    const me    = list.filter(e=>isMe(e)).reduce((s,e)=>s+e.amt,0);
-    const her   = list.filter(e=>!isMe(e)).reduce((s,e)=>s+e.amt,0);
+    const list    = groups[m];
+    const total   = list.reduce((s,e)=>s+e.amt, 0);
+    const me_con  = list.reduce((s,e)=>s+e.amt_me, 0);
+    const her_con = list.reduce((s,e)=>s+e.amt_her, 0);
     const [yr, mo] = m.split('-');
     return `<div class="month-group">
       <div class="month-header">
-        <span>${yr}年${parseInt(mo)}月 <small style="font-weight:400;color:var(--text3)">${list.length}筆</small></span>
-        <span class="month-total">NT$${total.toLocaleString()} ／ ${NAME_ME} NT$${me.toLocaleString()} ／ ${NAME_HER} NT$${her.toLocaleString()}</span>
+        <div class="month-header-top">
+          <span>${yr}年${parseInt(mo)}月 <small style="font-weight:400;color:var(--text3)">${list.length}筆</small></span>
+          <span class="month-total">共 NT$${total.toLocaleString()}</span>
+        </div>
+        <div class="month-split">
+          <span class="month-split-me">💙 ${NAME_ME} NT$${me_con.toLocaleString()}</span>
+          <span class="month-split-her">🩷 ${NAME_HER} NT$${her_con.toLocaleString()}</span>
+        </div>
       </div>
       ${list.map(entryHTML).join('')}
     </div>`;
@@ -384,7 +471,7 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-['inpLoc','inpItem','inpAmt'].forEach(id => {
+['inpLoc','inpItem','inpAmtMe','inpAmtHer'].forEach(id => {
   document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') addEntry(); });
 });
 
