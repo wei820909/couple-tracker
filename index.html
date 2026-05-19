@@ -14,16 +14,17 @@
   --me:#185FA5;--me-bg:#E6F1FB;--me-text:#0C447C;
   --her:#993556;--her-bg:#FBEAF0;--her-text:#72243E;
   --accent:#D85A30;--radius:12px;--radius-sm:8px;
+  --danger:#E53935;
 }
 body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px}
 header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;position:sticky;top:0;z-index:10}
-.header-inner{max-width:700px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.header-inner{max-width:740px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
 .logo{font-family:'DM Serif Display',serif;font-size:21px;letter-spacing:-0.3px}
 .logo span{color:var(--accent)}
 .nav-tabs{display:flex;gap:4px}
 .nav-btn{padding:6px 14px;border-radius:99px;border:1px solid var(--border-md);background:transparent;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text2);transition:all .15s}
 .nav-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
-main{max-width:700px;margin:0 auto;padding:20px 16px 0}
+main{max-width:740px;margin:0 auto;padding:20px 16px 0}
 .page{display:none}.page.active{display:block}
 
 /* Stats */
@@ -34,27 +35,46 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
 .stat-value.me{color:var(--me)}.stat-value.her{color:var(--her)}
 .stat-sub{font-size:11px;color:var(--text3);margin-top:4px}
 
-/* Form */
+/* Form card */
 .form-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:20px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .form-group{display:flex;flex-direction:column;gap:5px}
 .form-group.full{grid-column:1/-1}
 .form-group label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
-.form-group input{font-family:'Noto Sans TC',sans-serif;font-size:14px;color:var(--text);background:var(--bg);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:9px 12px;outline:none;transition:border-color .15s;width:100%}
-.form-group input:focus{border-color:var(--accent);background:var(--surface)}
-.form-group input.me-input:focus{border-color:var(--me)}
-.form-group input.her-input:focus{border-color:var(--her)}
-
-.amount-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;grid-column:1/-1}
-.amount-label-me{font-size:11px;color:var(--me-text);font-weight:600;text-transform:uppercase;letter-spacing:0.3px}
-.amount-label-her{font-size:11px;color:var(--her-text);font-weight:600;text-transform:uppercase;letter-spacing:0.3px}
-.amount-label-total{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
-.total-display{font-size:14px;font-weight:700;color:var(--text);background:var(--surface2);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:9px 12px;display:flex;align-items:center}
-
+.form-group input,.form-group select{font-family:'Noto Sans TC',sans-serif;font-size:14px;color:var(--text);background:var(--bg);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:9px 12px;outline:none;transition:border-color .15s;width:100%}
+.form-group input:focus,.form-group select:focus{border-color:var(--accent);background:var(--surface)}
 .payer-toggle{display:flex;gap:8px}
 .payer-btn{flex:1;padding:10px 8px;border:1px solid var(--border-md);border-radius:var(--radius-sm);background:var(--bg);cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:14px;color:var(--text2);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:500}
 .payer-btn.active-me{background:var(--me-bg);border-color:var(--me);color:var(--me-text);font-weight:700}
 .payer-btn.active-her{background:var(--her-bg);border-color:var(--her);color:var(--her-text);font-weight:700}
+
+/* Items table */
+.items-section{margin-bottom:14px}
+.items-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.items-title{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
+.add-item-btn{font-size:12px;color:var(--accent);background:none;border:1px solid var(--accent);border-radius:99px;padding:3px 12px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;transition:all .15s}
+.add-item-btn:hover{background:var(--me-bg)}
+.items-list{display:flex;flex-direction:column;gap:6px}
+.item-row{display:grid;grid-template-columns:1fr 110px 110px 32px;gap:6px;align-items:center}
+.item-row input{font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);background:var(--bg);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:7px 10px;outline:none;transition:border-color .15s;width:100%}
+.item-row input:focus{border-color:var(--accent);background:var(--surface)}
+.item-row input.me-in:focus{border-color:var(--me)}
+.item-row input.her-in:focus{border-color:var(--her)}
+.item-row-label{font-size:10px;color:var(--text3);text-align:center;margin-bottom:2px}
+.item-label-me{color:var(--me-text)}
+.item-label-her{color:var(--her-text)}
+.remove-item-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;padding:4px;border-radius:6px;transition:all .12s;display:flex;align-items:center;justify-content:center}
+.remove-item-btn:hover{color:var(--danger);background:#fde8e8}
+.items-total{display:flex;justify-content:flex-end;gap:12px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.items-total-label{font-size:12px;color:var(--text3)}
+.items-total-me{font-size:13px;font-weight:600;color:var(--me)}
+.items-total-her{font-size:13px;font-weight:600;color:var(--her)}
+.items-total-all{font-size:13px;font-weight:700;color:var(--text)}
+.items-col-headers{display:grid;grid-template-columns:1fr 110px 110px 32px;gap:6px;margin-bottom:2px}
+.col-lbl{font-size:10px;color:var(--text3);text-align:center}
+.col-lbl.me{color:var(--me-text)}.col-lbl.her{color:var(--her-text)}
+.col-lbl.left{text-align:left;padding-left:2px}
+
 .add-btn{width:100%;padding:11px;background:var(--text);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:opacity .15s,transform .1s;display:flex;align-items:center;justify-content:center;gap:6px}
 .add-btn:hover{opacity:0.85}.add-btn:active{transform:scale(0.98)}
 .add-btn:disabled{opacity:0.5;cursor:not-allowed}
@@ -65,31 +85,38 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
 .filter-left{display:flex;gap:6px}
 .filter-btn{padding:5px 14px;border-radius:99px;border:1px solid var(--border-md);background:transparent;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text2);transition:all .12s}
 .filter-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+.sync-note{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:5px}
+.dot{width:7px;height:7px;border-radius:50%;background:#4CAF50;display:inline-block;flex-shrink:0}
+.dot.syncing{background:#FFA726;animation:blink 1s infinite}
+.dot.err{background:#e53935}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* Entry */
+/* Entry list */
 .entry-list{display:flex;flex-direction:column;gap:8px}
-.entry{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;display:flex;align-items:center;gap:12px;animation:fadeIn .2s ease}
+.entry{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:box-shadow .15s,border-color .15s;animation:fadeIn .2s ease}
+.entry:hover{box-shadow:0 2px 12px rgba(0,0,0,0.08);border-color:var(--border-md)}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.entry-top{display:flex;align-items:center;gap:12px}
 .entry-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;font-weight:700}
 .entry-icon.me{background:var(--me-bg);color:var(--me)}
 .entry-icon.her{background:var(--her-bg);color:var(--her)}
 .entry-info{flex:1;min-width:0}
-.entry-item{font-size:14px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.entry-meta{font-size:12px;color:var(--text3);margin-top:3px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.entry-location{font-size:14px;font-weight:600;color:var(--text)}
+.entry-meta{font-size:12px;color:var(--text3);margin-top:2px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .tag{font-size:11px;padding:2px 8px;border-radius:99px}
-.tag.loc{background:var(--surface2);color:var(--text2)}
 .tag.me{background:var(--me-bg);color:var(--me-text)}
 .tag.her{background:var(--her-bg);color:var(--her-text)}
-.entry-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.entry-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
 .entry-total{font-size:15px;font-weight:700;color:var(--text)}
-.entry-split{display:flex;gap:6px}
+.entry-split{display:flex;gap:5px}
 .split-tag{font-size:11px;padding:2px 7px;border-radius:99px}
 .split-tag.me{background:var(--me-bg);color:var(--me-text)}
 .split-tag.her{background:var(--her-bg);color:var(--her-text)}
-.delete-btn{background:none;border:none;cursor:pointer;color:var(--text3);padding:5px;border-radius:6px;font-size:16px;line-height:1;transition:all .12s;flex-shrink:0}
-.delete-btn:hover{background:var(--surface2);color:var(--text2)}
+.entry-items-preview{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:5px}
+.item-chip{font-size:11px;background:var(--surface2);color:var(--text2);padding:2px 9px;border-radius:99px}
 .empty{text-align:center;padding:3rem 1rem;color:var(--text3);font-size:14px;line-height:2.2}
 .empty-icon{font-size:32px;display:block;margin-bottom:8px}
+.loading{text-align:center;padding:2rem;color:var(--text3);font-size:14px}
 
 /* History */
 .history-controls{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
@@ -101,25 +128,46 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
 .month-header-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
 .month-total{font-weight:400;color:var(--text3);font-size:12px}
 .month-split{display:flex;gap:10px;font-size:12px}
-.month-split-me{color:var(--me)}
-.month-split-her{color:var(--her)}
+.month-split-me{color:var(--me)}.month-split-her{color:var(--her)}
 
-/* Sync */
-.sync-note{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:5px}
-.dot{width:7px;height:7px;border-radius:50%;background:#4CAF50;display:inline-block;flex-shrink:0}
-.dot.syncing{background:#FFA726;animation:blink 1s infinite}
-.dot.err{background:#e53935}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.loading{text-align:center;padding:2rem;color:var(--text3);font-size:14px}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:#fff;font-size:13px;padding:9px 20px;border-radius:99px;opacity:0;transition:all .25s;pointer-events:none;z-index:99;white-space:nowrap}
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(3px);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius);width:100%;max-width:580px;max-height:90vh;overflow-y:auto;transform:translateY(16px);transition:transform .22s;box-shadow:0 20px 60px rgba(0,0,0,0.15)}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 0}
+.modal-title{font-size:16px;font-weight:700;color:var(--text)}
+.modal-close{background:none;border:1px solid var(--border-md);color:var(--text3);width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:14px;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{border-color:var(--danger);color:var(--danger)}
+.modal-body{padding:16px 20px 20px}
+.modal-form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.modal-form-group{display:flex;flex-direction:column;gap:5px}
+.modal-form-group.full{grid-column:1/-1}
+.modal-form-group label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
+.modal-form-group input,.modal-form-group select{font-family:'Noto Sans TC',sans-serif;font-size:14px;color:var(--text);background:var(--bg);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:9px 12px;outline:none;transition:border-color .15s;width:100%}
+.modal-form-group input:focus,.modal-form-group select:focus{border-color:var(--accent);background:var(--surface)}
+.modal-actions{display:flex;gap:8px;padding:0 20px 20px;justify-content:flex-end}
+.btn-save{padding:9px 20px;background:var(--text);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.btn-save:hover{opacity:0.85}
+.btn-save:disabled{opacity:0.5;cursor:not-allowed}
+.btn-cancel{padding:9px 16px;background:transparent;border:1px solid var(--border-md);color:var(--text2);border-radius:var(--radius-sm);font-family:'Noto Sans TC',sans-serif;font-size:13px;cursor:pointer;transition:all .15s}
+.btn-cancel:hover{border-color:var(--text);color:var(--text)}
+.btn-delete{padding:9px 16px;background:transparent;border:1px solid var(--border-md);color:var(--text3);border-radius:var(--radius-sm);font-family:'Noto Sans TC',sans-serif;font-size:13px;cursor:pointer;transition:all .15s;margin-right:auto}
+.btn-delete:hover{border-color:var(--danger);color:var(--danger)}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:#fff;font-size:13px;padding:9px 20px;border-radius:99px;opacity:0;transition:all .25s;pointer-events:none;z-index:200;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:480px){
-  .form-grid{grid-template-columns:1fr}
+
+@media(max-width:520px){
+  .form-row{grid-template-columns:1fr}
   .form-group.full{grid-column:1}
-  .amount-row{grid-template-columns:1fr 1fr 1fr}
-  .stats{gap:6px}.stat{padding:10px 6px}.stat-value{font-size:15px}
+  .stats{gap:6px}.stat{padding:10px 6px}.stat-value{font-size:14px}
+  .item-row{grid-template-columns:1fr 90px 90px 28px}
   .history-controls{flex-direction:column}
   .search-input{min-width:unset;width:100%}
+  .modal-form-row{grid-template-columns:1fr}
+  .modal-form-group.full{grid-column:1}
 }
 </style>
 </head>
@@ -136,6 +184,7 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
 </header>
 
 <main>
+  <!-- 記帳頁 -->
   <div class="page active" id="page-home">
     <div class="stats">
       <div class="stat">
@@ -155,36 +204,15 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
     </div>
 
     <div class="form-card">
-      <div class="form-grid">
+      <div class="form-row">
         <div class="form-group">
           <label>📅 日期</label>
           <input type="date" id="inpDate">
         </div>
         <div class="form-group">
           <label>📍 地點</label>
-          <input type="text" id="inpLoc" placeholder="例：信義區、東區…">
+          <input type="text" id="inpLoc" placeholder="例：早餐店、電影院…">
         </div>
-        <div class="form-group full">
-          <label>🛍 品項</label>
-          <input type="text" id="inpItem" placeholder="例：早餐、電影票…">
-        </div>
-
-        <!-- 金額區塊 -->
-        <div class="amount-row">
-          <div class="form-group">
-            <label class="amount-label-me">💙 惟鈞金額</label>
-            <input type="number" id="inpAmtMe" class="me-input" placeholder="0" min="0" oninput="calcTotal()">
-          </div>
-          <div class="form-group">
-            <label class="amount-label-her">🩷 虹綾金額</label>
-            <input type="number" id="inpAmtHer" class="her-input" placeholder="0" min="0" oninput="calcTotal()">
-          </div>
-          <div class="form-group">
-            <label class="amount-label-total">總金額</label>
-            <div class="total-display" id="totalDisplay">NT$0</div>
-          </div>
-        </div>
-
         <div class="form-group full">
           <label>👤 誰結帳</label>
           <div class="payer-toggle">
@@ -193,6 +221,28 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
           </div>
         </div>
       </div>
+
+      <!-- 品項 -->
+      <div class="items-section">
+        <div class="items-header">
+          <span class="items-title">🛍 消費品項</span>
+          <button class="add-item-btn" onclick="addItemRow()">＋ 新增品項</button>
+        </div>
+        <div class="items-col-headers">
+          <div class="col-lbl left">品項名稱</div>
+          <div class="col-lbl me">💙 惟鈞</div>
+          <div class="col-lbl her">🩷 虹綾</div>
+          <div></div>
+        </div>
+        <div class="items-list" id="itemsList"></div>
+        <div class="items-total">
+          <span class="items-total-label">小計：</span>
+          <span class="items-total-me" id="totalMe">惟鈞 NT$0</span>
+          <span class="items-total-her" id="totalHer">虹綾 NT$0</span>
+          <span class="items-total-all" id="totalAll">共 NT$0</span>
+        </div>
+      </div>
+
       <button class="add-btn" id="addBtn" onclick="addEntry()">＋ 新增紀錄</button>
       <div class="save-note" id="saveNote"></div>
     </div>
@@ -214,6 +264,7 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
     </div>
   </div>
 
+  <!-- 歷史紀錄頁 -->
   <div class="page" id="page-history">
     <div class="history-controls">
       <select class="hist-select" id="histMonth" onchange="renderHistory()">
@@ -230,26 +281,76 @@ main{max-width:700px;margin:0 auto;padding:20px 16px 0}
   </div>
 </main>
 
+<!-- 編輯 Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title">✏️ 編輯紀錄</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-form-row">
+        <div class="modal-form-group">
+          <label>📅 日期</label>
+          <input type="date" id="mDate">
+        </div>
+        <div class="modal-form-group">
+          <label>📍 地點</label>
+          <input type="text" id="mLoc" placeholder="地點">
+        </div>
+        <div class="modal-form-group full">
+          <label>👤 誰結帳</label>
+          <div class="payer-toggle">
+            <button class="payer-btn" id="mBtnMe" onclick="setModalPayer('惟鈞')">💙 惟鈞結帳</button>
+            <button class="payer-btn" id="mBtnHer" onclick="setModalPayer('虹綾')">🩷 虹綾結帳</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="items-section">
+        <div class="items-header">
+          <span class="items-title">🛍 消費品項</span>
+          <button class="add-item-btn" onclick="addModalItemRow()">＋ 新增品項</button>
+        </div>
+        <div class="items-col-headers">
+          <div class="col-lbl left">品項名稱</div>
+          <div class="col-lbl me">💙 惟鈞</div>
+          <div class="col-lbl her">🩷 虹綾</div>
+          <div></div>
+        </div>
+        <div class="items-list" id="mItemsList"></div>
+        <div class="items-total">
+          <span class="items-total-label">小計：</span>
+          <span class="items-total-me" id="mTotalMe">惟鈞 NT$0</span>
+          <span class="items-total-her" id="mTotalHer">虹綾 NT$0</span>
+          <span class="items-total-all" id="mTotalAll">共 NT$0</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-delete" onclick="deleteFromModal()">🗑 刪除</button>
+      <button class="btn-cancel" onclick="closeModal()">取消</button>
+      <button class="btn-save" id="btnSave" onclick="saveModal()">儲存</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-const API      = 'https://script.google.com/macros/s/AKfycbytTdM0QzH1l9-_E02lJHdWYmuj1U_At-BFdkQE9CNbNHxlQT26QCZFYhWMUPLnXdu21A/exec';
+const API      = 'https://script.google.com/macros/s/AKfycbwFm1jAM7PX5HwRw42rLmsjjFBOtoMKuQDmE5BZbR8dZ_8fNRf5pcORSwvY-XZ5hOkQXg/exec';
 const NAME_ME  = '惟鈞';
 const NAME_HER = '虹綾';
 
-let entries = [], payer = NAME_ME, filter = 'all';
+let entries = [], payer = NAME_ME, filter = 'all', editId = null, modalPayer = NAME_ME;
 
 document.getElementById('inpDate').value = new Date().toISOString().split('T')[0];
+addItemRow(); // 預設一個品項
 
+// ── API ──
 function apiGet(params) {
   const url = API + '?' + new URLSearchParams(params).toString();
   return fetch(url).then(r => r.json());
-}
-
-function calcTotal() {
-  const me  = parseFloat(document.getElementById('inpAmtMe').value)  || 0;
-  const her = parseFloat(document.getElementById('inpAmtHer').value) || 0;
-  document.getElementById('totalDisplay').textContent = 'NT$' + (me + her).toLocaleString();
 }
 
 async function fetchEntries() {
@@ -258,74 +359,230 @@ async function fetchEntries() {
     const json = await apiGet({});
     if (json.success) {
       entries = json.data.map(r => ({
-        id:         String(r.id),
-        date:       r.date,
-        location:   r.location,
-        item:       r.item,
-        amt:        Number(r.amount),
-        payer:      r.payer,
-        amt_me:     Number(r.amount_me)  || 0,
-        amt_her:    Number(r.amount_her) || 0
+        id:       String(r.id),
+        date:     normalizeDate(r.date),
+        location: r.location,
+        payer:    r.payer,
+        total:    Number(r.total),
+        items:    parseItems(r.items)
       })).sort((a,b) => Number(b.id) - Number(a.id));
       setSyncState('ok');
-    } else {
-      setSyncState('err');
-      showToast('連線失敗：' + (json.error || '未知錯誤'));
-    }
-  } catch(e) {
-    console.error(e);
-    setSyncState('err');
-    showToast('無法連線，請確認部署設定');
-  }
+    } else { setSyncState('err'); showToast('連線失敗'); }
+  } catch(e) { console.error(e); setSyncState('err'); showToast('無法連線'); }
   updateStats(); renderList(); buildMonthOptions(); renderHistory();
 }
 
-async function addEntry() {
-  const date    = document.getElementById('inpDate').value;
-  const loc     = document.getElementById('inpLoc').value.trim();
-  const item    = document.getElementById('inpItem').value.trim();
-  const amt_me  = parseFloat(document.getElementById('inpAmtMe').value)  || 0;
-  const amt_her = parseFloat(document.getElementById('inpAmtHer').value) || 0;
-  const amt     = amt_me + amt_her;
+function parseItems(raw) {
+  try { return JSON.parse(raw) || []; } catch { return []; }
+}
 
-  if (!date || !loc || !item || amt <= 0) {
-    showToast('請填寫所有欄位且金額大於 0 ⚠️'); return;
+// 處理各種日期格式，統一轉成 YYYY-MM-DD
+function normalizeDate(raw) {
+  if (!raw) return '';
+  const s = String(raw).trim();
+  // 已經是 YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  // 嘗試用 Date 解析
+  const d = new Date(s);
+  if (!isNaN(d.getTime())) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
   }
+  return s;
+}
 
+// 格式化顯示用的日期字串
+function formatDate(raw) {
+  const s = normalizeDate(raw);
+  if (!s) return '—';
+  const parts = s.split('-');
+  if (parts.length === 3) {
+    return parseInt(parts[1]) + '/' + parseInt(parts[2]);
+  }
+  return s;
+}
+
+// 格式化月份群組用
+function formatMonth(raw) {
+  const s = normalizeDate(raw);
+  if (!s) return raw;
+  return s.slice(0,7);
+}
+
+// ── 新增記帳 ──
+function addItemRow() {
+  const list = document.getElementById('itemsList');
+  const idx = list.children.length;
+  const row = document.createElement('div');
+  row.className = 'item-row';
+  row.innerHTML = `
+    <input type="text" placeholder="品項名稱" class="item-name" oninput="recalc()">
+    <input type="number" placeholder="0" min="0" class="item-me me-in" oninput="recalc()">
+    <input type="number" placeholder="0" min="0" class="item-her her-in" oninput="recalc()">
+    <button class="remove-item-btn" onclick="removeItemRow(this)" title="刪除">✕</button>`;
+  list.appendChild(row);
+  row.querySelector('.item-name').focus();
+}
+
+function removeItemRow(btn) {
+  btn.closest('.item-row').remove();
+  recalc();
+}
+
+function recalc() {
+  const rows = document.querySelectorAll('#itemsList .item-row');
+  let me = 0, her = 0;
+  rows.forEach(r => {
+    me  += parseFloat(r.querySelector('.item-me').value)  || 0;
+    her += parseFloat(r.querySelector('.item-her').value) || 0;
+  });
+  document.getElementById('totalMe').textContent  = '惟鈞 NT$' + me.toLocaleString();
+  document.getElementById('totalHer').textContent = '虹綾 NT$' + her.toLocaleString();
+  document.getElementById('totalAll').textContent = '共 NT$' + (me+her).toLocaleString();
+}
+
+function getItemsFromList(listId) {
+  const rows = document.querySelectorAll('#'+listId+' .item-row');
+  const items = [];
+  rows.forEach(r => {
+    const name = r.querySelector('.item-name').value.trim();
+    const me   = parseFloat(r.querySelector('.item-me').value)  || 0;
+    const her  = parseFloat(r.querySelector('.item-her').value) || 0;
+    if (name || me || her) items.push({ name: name||'品項', me, her });
+  });
+  return items;
+}
+
+async function addEntry() {
+  const date  = document.getElementById('inpDate').value;
+  const loc   = document.getElementById('inpLoc').value.trim();
+  const items = getItemsFromList('itemsList');
+  const total = items.reduce((s,i)=>s+i.me+i.her, 0);
+  if (!date || !loc || items.length === 0 || total <= 0) {
+    showToast('請填寫日期、地點並新增至少一個品項 ⚠️'); return;
+  }
   const btn = document.getElementById('addBtn');
   btn.disabled = true; btn.textContent = '儲存中…';
   const id = String(Date.now());
-
   try {
     const json = await apiGet({
-      action: 'add', id, date, location: loc, item,
-      amount: amt, payer, amount_me: amt_me, amount_her: amt_her
+      action: 'add', id, date, location: loc,
+      payer, total, items: JSON.stringify(items)
     });
     if (json.success) {
-      entries.unshift({ id, date, location: loc, item, amt, payer, amt_me, amt_her });
-      document.getElementById('inpAmtMe').value  = '';
-      document.getElementById('inpAmtHer').value = '';
-      document.getElementById('inpLoc').value    = '';
-      document.getElementById('inpItem').value   = '';
-      document.getElementById('totalDisplay').textContent = 'NT$0';
-      document.getElementById('inpItem').focus();
+      entries.unshift({ id, date, location: loc, payer, total, items });
+      resetForm();
       const t = new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
       document.getElementById('saveNote').textContent = '✓ 已同步到雲端 · ' + t;
       showToast('新增成功 ✓');
       updateStats(); renderList(); buildMonthOptions();
-    } else { showToast('儲存失敗，請重試 ⚠️'); }
-  } catch(e) {
-    console.error(e);
-    showToast('網路錯誤，請重試 ⚠️');
-  }
+    } else { showToast('儲存失敗 ⚠️'); }
+  } catch(e) { console.error(e); showToast('網路錯誤 ⚠️'); }
   btn.disabled = false; btn.textContent = '＋ 新增紀錄';
 }
 
-async function deleteEntry(id) {
+function resetForm() {
+  document.getElementById('inpLoc').value = '';
+  document.getElementById('itemsList').innerHTML = '';
+  addItemRow();
+  recalc();
+}
+
+// ── Modal 編輯 ──
+function openModal(id) {
+  const e = entries.find(e=>e.id===id);
+  if (!e) return;
+  editId = id;
+  modalPayer = e.payer;
+  document.getElementById('mDate').value = e.date;
+  document.getElementById('mLoc').value  = e.location;
+  setModalPayer(e.payer);
+  const list = document.getElementById('mItemsList');
+  list.innerHTML = '';
+  e.items.forEach(item => addModalItemRow(item));
+  if (e.items.length === 0) addModalItemRow();
+  recalcModal();
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  editId = null;
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function setModalPayer(p) {
+  modalPayer = p;
+  document.getElementById('mBtnMe').className  = 'payer-btn' + (p===NAME_ME  ? ' active-me'  : '');
+  document.getElementById('mBtnHer').className = 'payer-btn' + (p===NAME_HER ? ' active-her' : '');
+}
+
+function addModalItemRow(item) {
+  const list = document.getElementById('mItemsList');
+  const row = document.createElement('div');
+  row.className = 'item-row';
+  row.innerHTML = `
+    <input type="text" placeholder="品項名稱" class="item-name" value="${item?.name||''}" oninput="recalcModal()">
+    <input type="number" placeholder="0" min="0" class="item-me me-in" value="${item?.me||''}" oninput="recalcModal()">
+    <input type="number" placeholder="0" min="0" class="item-her her-in" value="${item?.her||''}" oninput="recalcModal()">
+    <button class="remove-item-btn" onclick="removeModalItemRow(this)" title="刪除">✕</button>`;
+  list.appendChild(row);
+}
+
+function removeModalItemRow(btn) {
+  btn.closest('.item-row').remove();
+  recalcModal();
+}
+
+function recalcModal() {
+  const rows = document.querySelectorAll('#mItemsList .item-row');
+  let me = 0, her = 0;
+  rows.forEach(r => {
+    me  += parseFloat(r.querySelector('.item-me').value)  || 0;
+    her += parseFloat(r.querySelector('.item-her').value) || 0;
+  });
+  document.getElementById('mTotalMe').textContent  = '惟鈞 NT$' + me.toLocaleString();
+  document.getElementById('mTotalHer').textContent = '虹綾 NT$' + her.toLocaleString();
+  document.getElementById('mTotalAll').textContent = '共 NT$' + (me+her).toLocaleString();
+}
+
+async function saveModal() {
+  const date  = document.getElementById('mDate').value;
+  const loc   = document.getElementById('mLoc').value.trim();
+  const items = getItemsFromList('mItemsList');
+  const total = items.reduce((s,i)=>s+i.me+i.her, 0);
+  if (!date || !loc || items.length === 0 || total <= 0) {
+    showToast('請填寫所有欄位 ⚠️'); return;
+  }
+  const btn = document.getElementById('btnSave');
+  btn.disabled = true; btn.textContent = '儲存中…';
+  try {
+    const json = await apiGet({
+      action: 'update', id: editId, date, location: loc,
+      payer: modalPayer, total, items: JSON.stringify(items)
+    });
+    if (json.success) {
+      const idx = entries.findIndex(e=>e.id===editId);
+      if (idx >= 0) entries[idx] = { id: editId, date, location: loc, payer: modalPayer, total, items };
+      showToast('已更新 ✓');
+      closeModal();
+      updateStats(); renderList(); renderHistory();
+    } else { showToast('儲存失敗 ⚠️'); }
+  } catch(e) { console.error(e); showToast('網路錯誤 ⚠️'); }
+  btn.disabled = false; btn.textContent = '儲存';
+}
+
+async function deleteFromModal() {
   if (!confirm('確定要刪除這筆紀錄？')) return;
+  const id = editId;
   const backup = [...entries];
-  entries = entries.filter(e => e.id !== String(id));
-  updateStats(); renderList(); renderHistory();
+  entries = entries.filter(e=>e.id!==id);
+  closeModal(); updateStats(); renderList(); renderHistory();
   try {
     const json = await apiGet({ action:'delete', id });
     if (!json.success) { entries = backup; updateStats(); renderList(); showToast('刪除失敗'); }
@@ -333,6 +590,7 @@ async function deleteEntry(id) {
   } catch(e) { entries = backup; updateStats(); renderList(); showToast('網路錯誤'); }
 }
 
+// ── UI ──
 function setPayer(p) {
   payer = p;
   document.getElementById('btnMe').className  = 'payer-btn' + (p===NAME_ME  ? ' active-me'  : '');
@@ -341,32 +599,32 @@ function setPayer(p) {
 
 function setFilter(f, btn) {
   filter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderList();
 }
 
 function switchPage(page, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  if (page === 'history') renderHistory();
+  if (page==='history') renderHistory();
 }
 
 function setSyncState(s) {
   const dot = document.getElementById('syncDot');
   const txt = document.getElementById('syncText');
-  dot.className = 'dot' + (s==='syncing' ? ' syncing' : s==='err' ? ' err' : '');
-  txt.textContent = s==='syncing' ? '同步中…' : s==='ok' ? '已同步' : '無法連線';
+  dot.className = 'dot' + (s==='syncing'?' syncing':s==='err'?' err':'');
+  txt.textContent = s==='syncing'?'同步中…':s==='ok'?'已同步':'無法連線';
 }
 
 function updateStats() {
-  const total   = entries.reduce((s,e)=>s+e.amt, 0);
-  const me_con  = entries.reduce((s,e)=>s+e.amt_me, 0);
-  const her_con = entries.reduce((s,e)=>s+e.amt_her, 0);
-  const me_paid  = entries.filter(e=>e.payer===NAME_ME).reduce((s,e)=>s+e.amt, 0);
-  const her_paid = entries.filter(e=>e.payer===NAME_HER).reduce((s,e)=>s+e.amt, 0);
+  const total   = entries.reduce((s,e)=>s+e.total, 0);
+  const me_con  = entries.reduce((s,e)=>s+e.items.reduce((a,i)=>a+i.me,0), 0);
+  const her_con = entries.reduce((s,e)=>s+e.items.reduce((a,i)=>a+i.her,0), 0);
+  const me_paid  = entries.filter(e=>e.payer===NAME_ME).reduce((s,e)=>s+e.total,0);
+  const her_paid = entries.filter(e=>e.payer===NAME_HER).reduce((s,e)=>s+e.total,0);
   document.getElementById('statTotal').textContent   = 'NT$'+total.toLocaleString();
   document.getElementById('statMe').textContent      = 'NT$'+me_con.toLocaleString();
   document.getElementById('statHer').textContent     = 'NT$'+her_con.toLocaleString();
@@ -377,26 +635,29 @@ function updateStats() {
 function entryHTML(e) {
   const isMe = e.payer === NAME_ME;
   const initial = e.payer.slice(-1);
-  const d = new Date(e.date+'T00:00:00');
-  const ds = (d.getMonth()+1) + '/' + d.getDate();
-  return `<div class="entry">
-    <div class="entry-icon ${isMe?'me':'her'}">${initial}</div>
-    <div class="entry-info">
-      <div class="entry-item">${e.item}</div>
-      <div class="entry-meta">
-        <span>${ds}</span>
-        <span class="tag loc">📍 ${e.location}</span>
-        <span class="tag ${isMe?'me':'her'}">${e.payer}結帳</span>
+  const ds = formatDate(e.date);
+  const me_sum  = e.items.reduce((s,i)=>s+i.me,  0);
+  const her_sum = e.items.reduce((s,i)=>s+i.her, 0);
+  const chips = e.items.map(i=>`<span class="item-chip">${i.name}${i.me&&i.her?' (兩人)':i.me?' (鈞)':' (綾)'} NT$${(i.me+i.her).toLocaleString()}</span>`).join('');
+  return `<div class="entry" onclick="openModal('${e.id}')">
+    <div class="entry-top">
+      <div class="entry-icon ${isMe?'me':'her'}">${initial}</div>
+      <div class="entry-info">
+        <div class="entry-location">📍 ${e.location}</div>
+        <div class="entry-meta">
+          <span>${ds}</span>
+          <span class="tag ${isMe?'me':'her'}">${e.payer}結帳</span>
+        </div>
+      </div>
+      <div class="entry-right">
+        <div class="entry-total">NT$${e.total.toLocaleString()}</div>
+        <div class="entry-split">
+          <span class="split-tag me">鈞 NT$${me_sum.toLocaleString()}</span>
+          <span class="split-tag her">綾 NT$${her_sum.toLocaleString()}</span>
+        </div>
       </div>
     </div>
-    <div class="entry-right">
-      <div class="entry-total">NT$${e.amt.toLocaleString()}</div>
-      <div class="entry-split">
-        <span class="split-tag me">鈞 NT$${e.amt_me.toLocaleString()}</span>
-        <span class="split-tag her">綾 NT$${e.amt_her.toLocaleString()}</span>
-      </div>
-    </div>
-    <button class="delete-btn" onclick="deleteEntry('${e.id}')" title="刪除">✕</button>
+    ${chips ? `<div class="entry-items-preview">${chips}</div>` : ''}
   </div>`;
 }
 
@@ -404,8 +665,7 @@ function renderList() {
   const list = document.getElementById('entryList');
   const data = filter==='all' ? entries : entries.filter(e=>e.payer===filter);
   if (!data.length) {
-    list.innerHTML = '<div class="empty"><span class="empty-icon">🧾</span>' +
-      (entries.length===0 ? '還沒有紀錄<br>新增第一筆吧！' : '此篩選條件沒有紀錄') + '</div>';
+    list.innerHTML = '<div class="empty"><span class="empty-icon">🧾</span>'+(entries.length===0?'還沒有紀錄<br>新增第一筆吧！':'此篩選條件沒有紀錄')+'</div>';
     return;
   }
   list.innerHTML = data.map(entryHTML).join('');
@@ -414,8 +674,8 @@ function renderList() {
 function buildMonthOptions() {
   const sel = document.getElementById('histMonth');
   const cur = sel.value;
-  const months = [...new Set(entries.map(e=>e.date.slice(0,7)))].sort().reverse();
-  sel.innerHTML = '<option value="all">所有月份</option>' +
+  const months = [...new Set(entries.map(e=>formatMonth(e.date)))].sort().reverse();
+  sel.innerHTML = '<option value="all">所有月份</option>'+
     months.map(m=>`<option value="${m}"${m===cur?' selected':''}>${m.replace('-','年')}月</option>`).join('');
 }
 
@@ -423,29 +683,29 @@ function renderHistory() {
   const mf = document.getElementById('histMonth').value;
   const pf = document.getElementById('histPayer').value;
   const q  = document.getElementById('histSearch').value.trim().toLowerCase();
-  const filtered = entries.filter(e => {
-    if (mf !== 'all' && !e.date.startsWith(mf)) return false;
-    if (pf !== 'all' && e.payer !== pf) return false;
-    if (q && !e.item.toLowerCase().includes(q) && !e.location.toLowerCase().includes(q)) return false;
+  const filtered = entries.filter(e=>{
+    if (mf!=='all' && !formatMonth(e.date).startsWith(mf)) return false;
+    if (pf!=='all' && e.payer!==pf) return false;
+    if (q && !e.location.toLowerCase().includes(q) && !e.items.some(i=>i.name.toLowerCase().includes(q))) return false;
     return true;
   });
   const container = document.getElementById('historyList');
   if (!filtered.length) {
-    container.innerHTML = '<div class="empty"><span class="empty-icon">🔍</span>找不到符合的紀錄</div>';
+    container.innerHTML='<div class="empty"><span class="empty-icon">🔍</span>找不到符合的紀錄</div>';
     return;
   }
   const groups = {};
-  filtered.forEach(e => {
-    const m = e.date.slice(0,7);
-    if (!groups[m]) groups[m] = [];
+  filtered.forEach(e=>{
+    const m=formatMonth(e.date);
+    if(!groups[m]) groups[m]=[];
     groups[m].push(e);
   });
-  container.innerHTML = Object.keys(groups).sort().reverse().map(m => {
+  container.innerHTML = Object.keys(groups).sort().reverse().map(m=>{
     const list    = groups[m];
-    const total   = list.reduce((s,e)=>s+e.amt, 0);
-    const me_con  = list.reduce((s,e)=>s+e.amt_me, 0);
-    const her_con = list.reduce((s,e)=>s+e.amt_her, 0);
-    const [yr, mo] = m.split('-');
+    const total   = list.reduce((s,e)=>s+e.total,0);
+    const me_con  = list.reduce((s,e)=>s+e.items.reduce((a,i)=>a+i.me,0),0);
+    const her_con = list.reduce((s,e)=>s+e.items.reduce((a,i)=>a+i.her,0),0);
+    const [yr,mo] = m.split('-');
     return `<div class="month-group">
       <div class="month-header">
         <div class="month-header-top">
@@ -464,16 +724,11 @@ function renderHistory() {
 
 let toastTimer;
 function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
 }
-
-['inpLoc','inpItem','inpAmtMe','inpAmtHer'].forEach(id => {
-  document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') addEntry(); });
-});
 
 fetchEntries();
 </script>
