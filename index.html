@@ -382,13 +382,15 @@ function normalizeDate(raw) {
   const s = String(raw).trim();
   // 已經是 YYYY-MM-DD
   if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
-  // 嘗試用 Date 解析
-  const d = new Date(s);
-  if (!isNaN(d.getTime())) {
-    const y = d.getFullYear();
-    const m = String(d.getMonth()+1).padStart(2,'0');
-    const day = String(d.getDate()).padStart(2,'0');
-    return `${y}-${m}-${day}`;
+  // 只處理包含四位年份的完整日期字串（避免誤判 7-11 這類短字串）
+  if (s.length >= 8 && /\d{4}/.test(s)) {
+    const d = new Date(s);
+    if (!isNaN(d.getTime())) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      return `${y}-${m}-${day}`;
+    }
   }
   return s;
 }
