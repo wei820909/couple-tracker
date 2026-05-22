@@ -169,6 +169,27 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
   .modal-form-row{grid-template-columns:1fr}
   .modal-form-group.full{grid-column:1}
 }
+
+/* Date range & settlement */
+.date-range-bar{display:flex;align-items:flex-end;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.date-range-left{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;flex:1}
+.date-range-bar .form-group{display:flex;flex-direction:column;gap:5px}
+.date-range-bar label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
+.date-range-bar input{font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:7px 10px;outline:none;transition:border-color .15s}
+.date-range-bar input:focus{border-color:var(--accent)}
+.date-range-sep{font-size:16px;color:var(--text3);padding-bottom:8px}
+.clear-range-btn{padding:7px 14px;background:transparent;border:1px solid var(--border-md);border-radius:var(--radius-sm);color:var(--text3);font-family:'Noto Sans TC',sans-serif;font-size:12px;cursor:pointer;transition:all .15s;align-self:flex-end}
+.clear-range-btn:hover{border-color:var(--danger);color:var(--danger)}
+.settlement-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:20px}
+.settlement-title{font-size:13px;font-weight:700;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.settlement-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.settlement-item{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px}
+.settlement-item.full{grid-column:1/-1}
+.settlement-label{font-size:11px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.3px}
+.settlement-value{font-size:16px;font-weight:700;color:var(--text)}
+.settlement-value.me{color:var(--me)}.settlement-value.her{color:var(--her)}
+.settlement-result{font-size:14px;font-weight:600;color:var(--text);line-height:1.6}
+.settlement-result.me{color:var(--me)}.settlement-result.her{color:var(--her)}
 </style>
 </head>
 <body>
@@ -277,6 +298,46 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
       </select>
       <input class="search-input" id="histSearch" placeholder="🔍 搜尋地點或品項…" oninput="renderHistory()">
     </div>
+
+    <!-- 日期範圍 -->
+    <div class="date-range-bar">
+      <div class="date-range-left">
+        <div class="form-group">
+          <label>📅 開始日期</label>
+          <input type="date" id="histFrom" onchange="renderHistory()">
+        </div>
+        <div class="date-range-sep">—</div>
+        <div class="form-group">
+          <label>📅 結束日期</label>
+          <input type="date" id="histTo" onchange="renderHistory()">
+        </div>
+        <button class="clear-range-btn" onclick="clearDateRange()">✕ 清除</button>
+      </div>
+    </div>
+
+    <!-- 結算摘要 -->
+    <div class="settlement-box" id="settlementBox" style="display:none">
+      <div class="settlement-title">💰 區間結算</div>
+      <div class="settlement-grid">
+        <div class="settlement-item">
+          <div class="settlement-label">區間總消費</div>
+          <div class="settlement-value" id="setTotal">—</div>
+        </div>
+        <div class="settlement-item">
+          <div class="settlement-label">💙 惟鈞消費</div>
+          <div class="settlement-value me" id="setMe">—</div>
+        </div>
+        <div class="settlement-item">
+          <div class="settlement-label">🩷 虹綾消費</div>
+          <div class="settlement-value her" id="setHer">—</div>
+        </div>
+        <div class="settlement-item full">
+          <div class="settlement-label">結算結果</div>
+          <div class="settlement-result" id="setResult">—</div>
+        </div>
+      </div>
+    </div>
+
     <div id="historyList"><div class="loading">⏳ 載入中…</div></div>
   </div>
 </main>
@@ -681,16 +742,65 @@ function buildMonthOptions() {
     months.map(m=>`<option value="${m}"${m===cur?' selected':''}>${m.replace('-','年')}月</option>`).join('');
 }
 
+function clearDateRange() {
+  document.getElementById('histFrom').value = '';
+  document.getElementById('histTo').value = '';
+  renderHistory();
+}
+
 function renderHistory() {
-  const mf = document.getElementById('histMonth').value;
-  const pf = document.getElementById('histPayer').value;
-  const q  = document.getElementById('histSearch').value.trim().toLowerCase();
+  const mf   = document.getElementById('histMonth').value;
+  const pf   = document.getElementById('histPayer').value;
+  const q    = document.getElementById('histSearch').value.trim().toLowerCase();
+  const from = document.getElementById('histFrom').value;
+  const to   = document.getElementById('histTo').value;
+
   const filtered = entries.filter(e=>{
     if (mf!=='all' && !formatMonth(e.date).startsWith(mf)) return false;
     if (pf!=='all' && e.payer!==pf) return false;
     if (q && !e.location.toLowerCase().includes(q) && !e.items.some(i=>i.name.toLowerCase().includes(q))) return false;
+    if (from && e.date < from) return false;
+    if (to   && e.date > to)   return false;
     return true;
   });
+
+  // 結算摘要
+  const box = document.getElementById('settlementBox');
+  if (from || to) {
+    const total   = filtered.reduce((s,e)=>s+e.total,0);
+    const me_con  = filtered.reduce((s,e)=>s+e.items.reduce((a,i)=>a+i.me,0),0);
+    const her_con = filtered.reduce((s,e)=>s+e.items.reduce((a,i)=>a+i.her,0),0);
+    const me_paid  = filtered.filter(e=>e.payer===NAME_ME).reduce((s,e)=>s+e.total,0);
+    const her_paid = filtered.filter(e=>e.payer===NAME_HER).reduce((s,e)=>s+e.total,0);
+    const diff = me_paid - her_paid; // 正數 = 惟鈞多付，虹綾需還錢
+    const absDiff = Math.abs(diff);
+    const halfTotal = total / 2;
+    // 結算：各自應付一半，多付的人可以收回
+    const meShouldPay  = me_con;
+    const herShouldPay = her_con;
+    const meActualPay  = me_paid;
+    const herActualPay = her_paid;
+    const meOwes  = meShouldPay  - meActualPay;   // 正數表示還欠
+    const herOwes = herShouldPay - herActualPay;  // 正數表示還欠
+
+    let resultHTML = '';
+    if (Math.abs(meOwes) < 1 && Math.abs(herOwes) < 1) {
+      resultHTML = '<span style="color:var(--green)">✓ 雙方已結清，無需補款</span>';
+    } else if (meOwes > 0) {
+      resultHTML = `<span class="her">💙 惟鈞還需補給虹綾 <strong>NT$${Math.round(meOwes).toLocaleString()}</strong></span>`;
+    } else {
+      resultHTML = `<span class="me">🩷 虹綾還需補給惟鈞 <strong>NT$${Math.round(herOwes).toLocaleString()}</strong></span>`;
+    }
+
+    document.getElementById('setTotal').textContent = 'NT$'+total.toLocaleString();
+    document.getElementById('setMe').textContent    = 'NT$'+me_con.toLocaleString();
+    document.getElementById('setHer').textContent   = 'NT$'+her_con.toLocaleString();
+    document.getElementById('setResult').innerHTML  = resultHTML;
+    box.style.display = 'block';
+  } else {
+    box.style.display = 'none';
+  }
+
   const container = document.getElementById('historyList');
   if (!filtered.length) {
     container.innerHTML='<div class="empty"><span class="empty-icon">🔍</span>找不到符合的紀錄</div>';
