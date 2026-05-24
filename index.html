@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0065)file:///C:/Users/Wei/Downloads/%E8%A8%98%E5%B8%B3%E6%9C%AC_4.html -->
+<html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>我們的記帳本 💑</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link href="./index_files/css2" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -198,8 +198,8 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
   <div class="header-inner">
     <div class="logo">我們的<span>記帳本</span> 💑</div>
     <div class="nav-tabs">
-      <button class="nav-btn active" onclick="switchPage('home',this)">記帳</button>
-      <button class="nav-btn" onclick="switchPage('history',this)">歷史紀錄</button>
+      <button class="nav-btn active" onclick="switchPage(&#39;home&#39;,this)">記帳</button>
+      <button class="nav-btn" onclick="switchPage(&#39;history&#39;,this)">歷史紀錄</button>
     </div>
   </div>
 </header>
@@ -210,17 +210,17 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
     <div class="stats">
       <div class="stat">
         <div class="stat-label">總消費</div>
-        <div class="stat-value" id="statTotal">—</div>
+        <div class="stat-value" id="statTotal">NT$0</div>
       </div>
       <div class="stat">
         <div class="stat-label">惟鈞消費</div>
-        <div class="stat-value me" id="statMe">—</div>
-        <div class="stat-sub" id="statMePaid"></div>
+        <div class="stat-value me" id="statMe">NT$0</div>
+        <div class="stat-sub" id="statMePaid">結帳 NT$0</div>
       </div>
       <div class="stat">
         <div class="stat-label">虹綾消費</div>
-        <div class="stat-value her" id="statHer">—</div>
-        <div class="stat-sub" id="statHerPaid"></div>
+        <div class="stat-value her" id="statHer">NT$0</div>
+        <div class="stat-sub" id="statHerPaid">結帳 NT$0</div>
       </div>
     </div>
 
@@ -237,8 +237,8 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
         <div class="form-group full">
           <label>👤 誰結帳</label>
           <div class="payer-toggle">
-            <button class="payer-btn active-me" id="btnMe" onclick="setPayer('惟鈞')">💙 惟鈞結帳</button>
-            <button class="payer-btn" id="btnHer" onclick="setPayer('虹綾')">🩷 虹綾結帳</button>
+            <button class="payer-btn active-me" id="btnMe" onclick="setPayer(&#39;惟鈞&#39;)">💙 惟鈞結帳</button>
+            <button class="payer-btn" id="btnHer" onclick="setPayer(&#39;虹綾&#39;)">🩷 虹綾結帳</button>
           </div>
         </div>
       </div>
@@ -255,7 +255,11 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
           <div class="col-lbl her">🩷 虹綾</div>
           <div></div>
         </div>
-        <div class="items-list" id="itemsList"></div>
+        <div class="items-list" id="itemsList"><div class="item-row">
+    <input type="text" placeholder="品項名稱" class="item-name" oninput="recalc()">
+    <input type="number" placeholder="0" min="0" class="item-me me-in" oninput="recalc()">
+    <input type="number" placeholder="0" min="0" class="item-her her-in" oninput="recalc()">
+    <button class="remove-item-btn" onclick="removeItemRow(this)" title="刪除">✕</button></div></div>
         <div class="items-total">
           <span class="items-total-label">小計：</span>
           <span class="items-total-me" id="totalMe">惟鈞 NT$0</span>
@@ -270,27 +274,23 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
 
     <div class="filter-bar">
       <div class="filter-left">
-        <button class="filter-btn active" onclick="setFilter('all',this)">全部</button>
-        <button class="filter-btn" onclick="setFilter('惟鈞',this)">惟鈞結帳</button>
-        <button class="filter-btn" onclick="setFilter('虹綾',this)">虹綾結帳</button>
+        <button class="filter-btn active" onclick="setFilter(&#39;all&#39;,this)">全部</button>
+        <button class="filter-btn" onclick="setFilter(&#39;惟鈞&#39;,this)">惟鈞結帳</button>
+        <button class="filter-btn" onclick="setFilter(&#39;虹綾&#39;,this)">虹綾結帳</button>
       </div>
       <div class="sync-note">
-        <span class="dot syncing" id="syncDot"></span>
-        <span id="syncText">連線中…</span>
+        <span class="dot err" id="syncDot"></span>
+        <span id="syncText">無法連線</span>
       </div>
     </div>
 
-    <div class="entry-list" id="entryList">
-      <div class="loading">⏳ 載入資料中…</div>
-    </div>
+    <div class="entry-list" id="entryList"><div class="empty"><span class="empty-icon">🧾</span>還沒有紀錄<br>新增第一筆吧！</div></div>
   </div>
 
   <!-- 歷史紀錄頁 -->
   <div class="page" id="page-history">
     <div class="history-controls">
-      <select class="hist-select" id="histMonth" onchange="renderHistory()">
-        <option value="all">所有月份</option>
-      </select>
+      <select class="hist-select" id="histMonth" onchange="renderHistory()"><option value="all">所有月份</option></select>
       <select class="hist-select" id="histPayer" onchange="renderHistory()">
         <option value="all">所有結帳人</option>
         <option value="惟鈞">惟鈞結帳</option>
@@ -338,7 +338,7 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
       </div>
     </div>
 
-    <div id="historyList"><div class="loading">⏳ 載入中…</div></div>
+    <div id="historyList"><div class="empty"><span class="empty-icon">🔍</span>找不到符合的紀錄</div></div>
   </div>
 </main>
 
@@ -362,8 +362,8 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
         <div class="modal-form-group full">
           <label>👤 誰結帳</label>
           <div class="payer-toggle">
-            <button class="payer-btn" id="mBtnMe" onclick="setModalPayer('惟鈞')">💙 惟鈞結帳</button>
-            <button class="payer-btn" id="mBtnHer" onclick="setModalPayer('虹綾')">🩷 虹綾結帳</button>
+            <button class="payer-btn" id="mBtnMe" onclick="setModalPayer(&#39;惟鈞&#39;)">💙 惟鈞結帳</button>
+            <button class="payer-btn" id="mBtnHer" onclick="setModalPayer(&#39;虹綾&#39;)">🩷 虹綾結帳</button>
           </div>
         </div>
       </div>
@@ -396,7 +396,7 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast">無法連線</div>
 
 <script>
 const API      = 'https://script.google.com/macros/s/AKfycbxVIagHshhVq5c8XlUTPDHqelgOeSQCAy5rE473brggWylMYqB8Ph4diZE3Sw_aw467/exec';
@@ -426,7 +426,7 @@ async function fetchEntries() {
         payer:    r.payer,
         total:    Number(r.total),
         items:    parseItems(r.items)
-      })).sort((a,b) => Number(b.id) - Number(a.id));
+      })).sort((a,b) => b.date.localeCompare(a.date) || Number(b.id) - Number(a.id));
       setSyncState('ok');
     } else { setSyncState('err'); showToast('連線失敗'); }
   } catch(e) { console.error(e); setSyncState('err'); showToast('無法連線'); }
@@ -844,5 +844,6 @@ function showToast(msg) {
 
 fetchEntries();
 </script>
-</body>
-</html>
+
+
+</body></html>
