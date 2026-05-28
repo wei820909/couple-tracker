@@ -191,10 +191,7 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
   .hist-select{width:100%}
 
   /* 日期範圍 */
-  .date-range-left{flex-direction:column;gap:8px}
-  .date-range-bar input{width:100%}
-  .date-range-sep{display:none}
-  .clear-range-btn{width:100%}
+  .date-range-bar{grid-template-columns:1fr 1fr}
 
   /* 結算 */
   .settlement-grid{grid-template-columns:1fr 1fr}
@@ -220,14 +217,13 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
 }
 
 /* Date range & settlement */
-.date-range-bar{display:flex;align-items:flex-end;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-.date-range-left{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;flex:1}
+.date-range-bar{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .date-range-bar .form-group{display:flex;flex-direction:column;gap:5px}
-.date-range-bar label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
-.date-range-bar input{font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:7px 10px;outline:none;transition:border-color .15s}
+.date-range-bar label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px;display:flex;align-items:center;gap:4px}
+.date-range-bar input{font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:8px 10px;outline:none;transition:border-color .15s;width:100%}
 .date-range-bar input:focus{border-color:var(--accent)}
-.date-range-sep{font-size:16px;color:var(--text3);padding-bottom:8px}
-.clear-range-btn{padding:7px 14px;background:transparent;border:1px solid var(--border-md);border-radius:var(--radius-sm);color:var(--text3);font-family:'Noto Sans TC',sans-serif;font-size:12px;cursor:pointer;transition:all .15s;align-self:flex-end}
+.date-range-sep{display:none}
+.clear-range-btn{grid-column:1/-1;padding:8px;background:transparent;border:1px solid var(--border-md);border-radius:var(--radius-sm);color:var(--text3);font-family:'Noto Sans TC',sans-serif;font-size:12px;cursor:pointer;transition:all .15s;width:100%}
 .clear-range-btn:hover{border-color:var(--danger);color:var(--danger)}
 .settlement-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:20px}
 .settlement-title{font-size:13px;font-weight:700;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:6px}
@@ -350,18 +346,15 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
 
     <!-- 日期範圍 -->
     <div class="date-range-bar">
-      <div class="date-range-left">
-        <div class="form-group">
-          <label>📅 開始日期</label>
-          <input type="date" id="histFrom" onchange="renderHistory()">
-        </div>
-        <div class="date-range-sep">—</div>
-        <div class="form-group">
-          <label>📅 結束日期</label>
-          <input type="date" id="histTo" onchange="renderHistory()">
-        </div>
-        <button class="clear-range-btn" onclick="clearDateRange()">✕ 清除</button>
+      <div class="form-group">
+        <label>📅 開始日期</label>
+        <input type="date" id="histFrom" onchange="renderHistory()">
       </div>
+      <div class="form-group">
+        <label>📅 結束日期</label>
+        <input type="date" id="histTo" onchange="renderHistory()">
+      </div>
+      <button class="clear-range-btn" onclick="clearDateRange()">✕ 清除日期範圍</button>
     </div>
 
     <!-- 結算摘要 -->
