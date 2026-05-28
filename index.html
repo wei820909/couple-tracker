@@ -186,12 +186,8 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
   .items-total{flex-wrap:wrap;gap:6px}
 
   /* 篩選 */
-  .history-controls{flex-direction:column}
-  .search-input{min-width:unset;width:100%}
-  .hist-select{width:100%}
-
-  /* 日期範圍 */
-  .date-range-bar{grid-template-columns:1fr 1fr}
+  .hist-filter-card{padding:12px;gap:7px}
+  .hist-row{grid-template-columns:1fr 1fr;gap:6px}
 
   /* 結算 */
   .settlement-grid{grid-template-columns:1fr 1fr}
@@ -216,15 +212,23 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
   .btn-cancel,.btn-save{flex:1}
 }
 
-/* Date range & settlement */
-.date-range-bar{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.date-range-bar .form-group{display:flex;flex-direction:column;gap:5px}
-.date-range-bar label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px;display:flex;align-items:center;gap:4px}
-.date-range-bar input{font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:8px 10px;outline:none;transition:border-color .15s;width:100%}
-.date-range-bar input:focus{border-color:var(--accent)}
-.date-range-sep{display:none}
-.clear-range-btn{grid-column:1/-1;padding:8px;background:transparent;border:1px solid var(--border-md);border-radius:var(--radius-sm);color:var(--text3);font-family:'Noto Sans TC',sans-serif;font-size:12px;cursor:pointer;transition:all .15s;width:100%}
+/* History filter card */
+.hist-filter-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:16px;display:flex;flex-direction:column;gap:8px}
+.hist-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hist-select{font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);background:var(--bg);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:8px 10px;outline:none;cursor:pointer;width:100%}
+.hist-select:focus{border-color:var(--accent)}
+.hist-date-row{display:flex;align-items:flex-end;gap:8px}
+.hist-date-group{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.hist-date-label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
+.hist-date-sep{font-size:14px;color:var(--text3);padding-bottom:10px;flex-shrink:0}
+.hist-date{font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);background:var(--bg);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:8px 6px;outline:none;width:100%;min-width:0}
+.hist-date:focus{border-color:var(--accent)}
+.search-input{font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);background:var(--bg);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:8px 12px;outline:none;width:100%}
+.search-input:focus{border-color:var(--accent)}
+.clear-range-btn{padding:8px;background:transparent;border:1px solid var(--border-md);border-radius:var(--radius-sm);color:var(--text3);font-family:'Noto Sans TC',sans-serif;font-size:12px;cursor:pointer;transition:all .15s;width:100%}
 .clear-range-btn:hover{border-color:var(--danger);color:var(--danger)}
+
+/* Settlement */
 .settlement-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:20px}
 .settlement-title{font-size:13px;font-weight:700;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .settlement-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -332,27 +336,28 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0}
 
   <!-- 歷史紀錄頁 -->
   <div class="page" id="page-history">
-    <div class="history-controls">
-      <select class="hist-select" id="histMonth" onchange="renderHistory()">
-        <option value="all">所有月份</option>
-      </select>
-      <select class="hist-select" id="histPayer" onchange="renderHistory()">
-        <option value="all">所有結帳人</option>
-        <option value="惟鈞">惟鈞結帳</option>
-        <option value="虹綾">虹綾結帳</option>
-      </select>
-      <input class="search-input" id="histSearch" placeholder="🔍 搜尋地點或品項…" oninput="renderHistory()">
-    </div>
-
-    <!-- 日期範圍 -->
-    <div class="date-range-bar">
-      <div class="form-group">
-        <label>📅 開始日期</label>
-        <input type="date" id="histFrom" onchange="renderHistory()">
+    <div class="hist-filter-card">
+      <div class="hist-row">
+        <select class="hist-select" id="histMonth" onchange="renderHistory()">
+          <option value="all">所有月份</option>
+        </select>
+        <select class="hist-select" id="histPayer" onchange="renderHistory()">
+          <option value="all">所有結帳人</option>
+          <option value="惟鈞">惟鈞結帳</option>
+          <option value="虹綾">虹綾結帳</option>
+        </select>
       </div>
-      <div class="form-group">
-        <label>📅 結束日期</label>
-        <input type="date" id="histTo" onchange="renderHistory()">
+      <input class="search-input" id="histSearch" placeholder="🔍 搜尋地點或品項…" oninput="renderHistory()">
+      <div class="hist-date-row">
+        <div class="hist-date-group">
+          <label class="hist-date-label">📅 開始</label>
+          <input type="date" id="histFrom" class="hist-date" onchange="renderHistory()">
+        </div>
+        <span class="hist-date-sep">→</span>
+        <div class="hist-date-group">
+          <label class="hist-date-label">📅 結束</label>
+          <input type="date" id="histTo" class="hist-date" onchange="renderHistory()">
+        </div>
       </div>
       <button class="clear-range-btn" onclick="clearDateRange()">✕ 清除日期範圍</button>
     </div>
