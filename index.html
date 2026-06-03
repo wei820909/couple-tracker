@@ -247,6 +247,22 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0;width:100%;overflow-x:hid
 .settlement-value.me{color:var(--me)}.settlement-value.her{color:var(--her)}
 .settlement-result{font-size:14px;font-weight:600;color:var(--text);line-height:1.6}
 .settlement-result.me{color:var(--me)}.settlement-result.her{color:var(--her)}
+
+/* Settle */
+.settle-btn{width:100%;margin-top:12px;padding:10px;background:var(--green,#3FB950);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.settle-btn:hover{opacity:0.85}
+.settle-list-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:16px}
+.settle-list-title{font-size:13px;font-weight:700;color:var(--text2);margin-bottom:10px}
+.settle-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--surface2);border-radius:var(--radius-sm);margin-bottom:6px;font-size:13px}
+.settle-item:last-child{margin-bottom:0}
+.settle-item-info{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.settle-item-icon{width:24px;height:24px;border-radius:50%;background:#3FB95015;color:#2E8B47;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.settle-item-date{font-weight:600;color:var(--text)}
+.settle-item-amount{color:#2E8B47;font-weight:600;margin-right:8px}
+.settle-item-del{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;border-radius:6px;font-size:13px}
+.settle-item-del:hover{color:var(--danger);background:#fde8e8}
+.settle-info{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:12px;font-size:13px;color:var(--text2);line-height:1.6}
+:root{--green:#3FB950}
 </style>
 </head>
 <body>
@@ -386,6 +402,13 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0;width:100%;overflow-x:hid
           <div class="settlement-result" id="setResult">—</div>
         </div>
       </div>
+      <button class="settle-btn" id="settleBtn" onclick="openSettleModal()">✓ 標記為已結清</button>
+    </div>
+
+    <!-- 結清紀錄列表 -->
+    <div class="settle-list-section" id="settleListSection" style="display:none">
+      <div class="settle-list-title">📋 結清紀錄</div>
+      <div id="settleList"></div>
     </div>
 
     <div id="historyList"><div class="loading">⏳ 載入中…</div></div>
@@ -446,10 +469,37 @@ main{max-width:740px;margin:0 auto;padding:20px 16px 0;width:100%;overflow-x:hid
   </div>
 </div>
 
+<!-- 結清 Modal -->
+<div class="modal-overlay" id="settleModalOverlay" onclick="closeSettleModalOutside(event)">
+  <div class="modal" id="settleModal" style="max-width:420px">
+    <div class="modal-header">
+      <div class="modal-title">✓ 標記為已結清</div>
+      <button class="modal-close" onclick="closeSettleModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="settle-info" id="settleInfo"></div>
+      <div class="modal-form-row">
+        <div class="modal-form-group full">
+          <label>📅 結清日期</label>
+          <input type="date" id="settleDate">
+        </div>
+        <div class="modal-form-group full">
+          <label>💰 結清金額（NT$）</label>
+          <input type="number" id="settleAmount" min="0">
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeSettleModal()">取消</button>
+      <button class="btn-save" id="settleSaveBtn" onclick="saveSettlement()">儲存</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-const API      = 'https://script.google.com/macros/s/AKfycbxVIagHshhVq5c8XlUTPDHqelgOeSQCAy5rE473brggWylMYqB8Ph4diZE3Sw_aw467/exec';
+const API      = 'https://script.google.com/macros/s/AKfycbzJNeW6g7VHQJasVI6jYtLVY1obrKSqsZAnjtudirSbnFmowcWgpPAMPKk5c4FYyVNUEA/exec';
 const NAME_ME  = '惟鈞';
 const NAME_HER = '虹綾';
 
@@ -464,6 +514,8 @@ function apiGet(params) {
   return fetch(url).then(r => r.json());
 }
 
+let settlements = [];
+
 async function fetchEntries() {
   setSyncState('syncing');
   try {
@@ -477,10 +529,81 @@ async function fetchEntries() {
         total:    Number(r.total),
         items:    parseItems(r.items)
       })).sort((a,b) => b.date.localeCompare(a.date) || Number(b.id) - Number(a.id));
+      settlements = (json.settles || []).map(s => ({
+        id:          String(s.id),
+        settle_date: normalizeDate(s.settle_date),
+        amount:      Number(s.amount)
+      })).sort((a,b) => b.settle_date.localeCompare(a.settle_date));
       setSyncState('ok');
     } else { setSyncState('err'); showToast('連線失敗'); }
   } catch(e) { console.error(e); setSyncState('err'); showToast('無法連線'); }
   updateStats(); renderList(); buildMonthOptions(); renderHistory();
+}
+
+// ─── 結清功能 ───
+function openSettleModal() {
+  const totalText = document.getElementById('setResult').textContent;
+  // 從結算結果取出補款金額
+  const match = totalText.match(/NT\$([\d,]+)/);
+  const suggestAmount = match ? match[1].replace(/,/g,'') : '';
+  document.getElementById('settleDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('settleAmount').value = suggestAmount;
+  document.getElementById('settleInfo').innerHTML = '將標記為已結清。<br>本筆結清紀錄會出現在「結清紀錄」列表中。';
+  document.getElementById('settleModalOverlay').classList.add('open');
+}
+
+function closeSettleModal() {
+  document.getElementById('settleModalOverlay').classList.remove('open');
+}
+
+function closeSettleModalOutside(e) {
+  if (e.target === document.getElementById('settleModalOverlay')) closeSettleModal();
+}
+
+async function saveSettlement() {
+  const settle_date = document.getElementById('settleDate').value;
+  const amount      = parseFloat(document.getElementById('settleAmount').value) || 0;
+  if (!settle_date || amount <= 0) { showToast('請填寫日期與金額 ⚠️'); return; }
+  const btn = document.getElementById('settleSaveBtn');
+  btn.disabled = true; btn.textContent = '儲存中…';
+  const id = String(Date.now());
+  try {
+    const json = await apiGet({ action:'settle_add', id, settle_date, amount });
+    if (json.success) {
+      settlements.unshift({ id, settle_date, amount });
+      showToast('已標記為結清 ✓');
+      closeSettleModal();
+      renderHistory();
+    } else { showToast('儲存失敗：' + (json.error || '未知')); }
+  } catch(e) { console.error(e); showToast('網路錯誤 ⚠️'); }
+  btn.disabled = false; btn.textContent = '儲存';
+}
+
+async function deleteSettlement(id) {
+  if (!confirm('確定要刪除這筆結清紀錄？')) return;
+  const backup = [...settlements];
+  settlements = settlements.filter(s => s.id !== String(id));
+  renderHistory();
+  try {
+    const json = await apiGet({ action:'settle_delete', id });
+    if (!json.success) { settlements = backup; renderHistory(); showToast('刪除失敗'); }
+    else showToast('已刪除結清紀錄');
+  } catch(e) { settlements = backup; renderHistory(); showToast('網路錯誤'); }
+}
+
+function renderSettleList() {
+  const section = document.getElementById('settleListSection');
+  const list = document.getElementById('settleList');
+  if (!settlements.length) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  list.innerHTML = settlements.map(s => `<div class="settle-item">
+    <div class="settle-item-info">
+      <div class="settle-item-icon">✓</div>
+      <span class="settle-item-date">${s.settle_date}</span>
+    </div>
+    <span class="settle-item-amount">NT$${s.amount.toLocaleString()}</span>
+    <button class="settle-item-del" onclick="deleteSettlement('${s.id}')" title="刪除">✕</button>
+  </div>`).join('');
 }
 
 function parseItems(raw) {
@@ -799,6 +922,7 @@ function clearDateRange() {
 }
 
 function renderHistory() {
+  renderSettleList();
   const mf   = document.getElementById('histMonth').value;
   const pf   = document.getElementById('histPayer').value;
   const q    = document.getElementById('histSearch').value.trim().toLowerCase();
